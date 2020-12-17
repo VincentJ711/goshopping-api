@@ -1,0 +1,33 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+		
+<hibernate-configuration>
+	<session-factory>
+		<!-- JDBC database connection settings -->
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/goshopping</property>
+		
+		
+		
+		<!-- SQL Dialect -->
+		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
+		
+		<!-- Show generated SQL queries -->
+		<property name="show_sql">true</property>
+		
+		
+		<property name="hbm2ddl.auto">update</property>
+		
+		<!-- Specify our model classes here -->
+		<mapping class="com.revature.goshopping.model.User"></mapping>
+		
+		
+		<!-- Specify the entity mapping here -->
+		<!-- <mapping resource="planet.hbm.xml"></mapping> -->
+		
+		<!-- Named query mapping through XML -->
+		<!-- <mapping resource="namedquery.hbm.xml"></mapping> -->
+		
+	</session-factory>
+</hibernate-configuration>
