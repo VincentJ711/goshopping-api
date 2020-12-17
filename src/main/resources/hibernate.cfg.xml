@@ -5,10 +5,8 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- JDBC database connection settings -->
-		<!-- <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/goshopping</property>-->
-		<property name="hibernate.connection.url">jdbc:postgresql://isilo.db.elephantsql.com:5432/cjdkykbe</property>
-		<property name="hibernate.default_schema">goshopping</property>
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/goshopping</property>
 		
 		
 		
