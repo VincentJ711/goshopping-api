@@ -1,10 +1,15 @@
 package com.revature.goshopping.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -18,11 +23,11 @@ public class User {
 	private String username;
 	private String password;
 	private boolean admin;
-	
+	@OneToMany(cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Set<Order> orders = new HashSet<Order>();
 	
 	public User() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	
@@ -32,7 +37,10 @@ public class User {
 		this.password = password;
 		this.admin = admin;
 	}
-
+	
+	public void addOrder(Order order) {
+		orders.add(order);
+	}
 
 	public int getId() {
 		return id;

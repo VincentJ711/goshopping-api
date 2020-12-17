@@ -5,8 +5,10 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- JDBC database connection settings -->
-		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/goshopping</property>
+		<!-- <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/goshopping</property>-->
+		<property name="hibernate.connection.url">jdbc:postgresql://isilo.db.elephantsql.com:5432/cjdkykbe</property>
+		<property name="hibernate.default_schema">goshopping</property>
 		
 		
 		
@@ -21,6 +23,10 @@
 		
 		<!-- Specify our model classes here -->
 		<mapping class="com.revature.goshopping.model.User"></mapping>
+		<mapping class="com.revature.goshopping.model.Order"></mapping>
+		<mapping class="com.revature.goshopping.model.Item"></mapping>
+		<mapping class="com.revature.goshopping.model.ItemOrder"></mapping>
+		<mapping class="com.revature.goshopping.model.Tag"></mapping>
 		
 		
 		<!-- Specify the entity mapping here -->
