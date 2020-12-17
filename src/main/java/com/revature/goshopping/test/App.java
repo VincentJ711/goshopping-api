@@ -11,14 +11,10 @@ public class App {
 	public static void main(String[] args) {
 
 		try (Session session = HibernateUtility.getSession()) {
-
 			Transaction tx = session.beginTransaction();
-
-			User user = new User("hisham", "123", true);
-//			
+			User user = new User("hisham", "123", true);		
 			session.save(user);
 			tx.commit();
-//			System.out.println(id);
 		}
 
 	}
