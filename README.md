@@ -13,6 +13,14 @@ HBM2_DDL_AUTO=create-only
 
 ensure the database you refer to in env.DB_URL exists. Note the possible values for HBM2_DDL_AUTO can be found [here](https://stackoverflow.com/a/43727307/7929314)
 
+### running
+
+one way to run is to use the maven tomcat7 plugin
+
+``` 
+mvn package tomcat7:run
+```
+
 ### high level relationships
 
 entity objects should be passed to the dao layer which should return entity(s).
@@ -51,4 +59,3 @@ User
 - username
 - admin
 - password
-```
