@@ -1,15 +1,16 @@
 package com.revature.goshopping.model;
 
-public class User {
+public class Auth {
   private int id;
-
-  private String username;
 
   private boolean admin;
 
-  public User(int id, String username, boolean admin) {
+  private Auth() {
+
+  }
+
+  public Auth(int id, boolean admin) {
     this.id = id;
-    this.username = username;
     this.admin = admin;
   }
 
@@ -19,14 +20,6 @@ public class User {
 
   public void setId(int id) {
     this.id = id;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
   }
 
   public boolean isAdmin() {
