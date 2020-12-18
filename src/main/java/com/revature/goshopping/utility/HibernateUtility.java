@@ -14,9 +14,10 @@ public class HibernateUtility {
 			sessionFactory = new Configuration()
 					.setProperty("hibernate.connection.username", System.getenv("DB_USERNAME"))
 					.setProperty("hibernate.connection.password", System.getenv("DB_PASSWORD"))
+					.setProperty("hibernate.connection.url", System.getenv("DB_URL"))
+					.setProperty("hibernate.hbm2ddl.auto", System.getenv("HBM2_DDL_AUTO"))
 					.configure("hibernate.cfg.xml").buildSessionFactory();
 		}
-
 		return sessionFactory.openSession();
 	}
 
