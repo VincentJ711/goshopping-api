@@ -19,9 +19,7 @@ entity objects should be passed to the dao layer which should return entity(s).
 
 models should be created from entities in the service layer. these models should then be passed back to the controller to be sent back to the client as json.
 
-templates should be used for post/put requests where the whole object cannot/should not be given.
-
-instances of type Auth will should be passd to every service method that requires authentication. it may be nullable. it will be created upon login and returned to the user encoded in a jwt. the user will then pass along this jwt in the Authorization header for any requests that require authentication. The controllers will then parse the jwt from the header into an Auth object and pass this along to the desired service method.
+instances of type Auth will should be passed to every service method that requires authentication. it may be nullable. it will be created upon login and returned to the user encoded in a jwt. the user will then pass along this jwt in the Authorization header for any requests that require authentication. The controllers will then parse the jwt from the header into an Auth object and pass this along to the desired service method.
 
 all exceptions including/beneath the service layer should be handled in the service layer and thrown as a ServiceException. the controllers should then handle the exception and return the appropriate response/code. To be continued...
 
@@ -35,7 +33,7 @@ Tag
 Item
 - id
 - price
-- desc
+- description
 - name
 - tags: Tag[]
 
@@ -52,20 +50,5 @@ User
 - id
 - username
 - admin
-```
-
-#### templates
-
-```
-OrderItemTemplate
-- itemID
-- quantity
-
-OrderTemplate
-- userID
-- items: OrderItemTemplate[]
-
-UserTemplate
-- username
 - password
 ```

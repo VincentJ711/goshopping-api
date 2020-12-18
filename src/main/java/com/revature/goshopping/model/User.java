@@ -1,23 +1,31 @@
 package com.revature.goshopping.model;
 
 public class User {
-  private int id;
+  private Integer id;
 
   private String username;
 
-  private boolean admin;
+  private Boolean admin;
 
-  public User(int id, String username, boolean admin) {
+  private String password;
+
+  // for jackson
+  private User() {
+
+  }
+
+  public User(Integer id, String username, Boolean admin, String password) {
     this.id = id;
     this.username = username;
     this.admin = admin;
+    this.password = password;
   }
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -29,11 +37,19 @@ public class User {
     this.username = username;
   }
 
-  public boolean isAdmin() {
+  public Boolean getAdmin() {
     return admin;
   }
 
-  public void setAdmin(boolean admin) {
+  public void setAdmin(Boolean admin) {
     this.admin = admin;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 }

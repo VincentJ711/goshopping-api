@@ -5,6 +5,7 @@ import java.util.List;
 public class OrderItem extends Item {
   private int quantity;
 
+  // for jackson
   private OrderItem() {
 
   }

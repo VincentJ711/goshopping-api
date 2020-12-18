@@ -1,5 +1,6 @@
 package com.revature.goshopping.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
@@ -8,14 +9,18 @@ public class Order {
   /**
    * millis since epoch
    */
-  private long date;
+  private Long date;
 
   private int userID;
 
-  private List<OrderItem> items;
+  private List<OrderItem> items = new ArrayList<>();
 
-  public Order(int id, long date, int userID,
-      List<OrderItem> items) {
+  // for jackson
+  private Order() {
+
+  }
+
+  public Order(int id, Long date, int userID, List<OrderItem> items) {
     this.id = id;
     this.date = date;
     this.userID = userID;
@@ -30,11 +35,11 @@ public class Order {
     this.id = id;
   }
 
-  public long getDate() {
+  public Long getDate() {
     return date;
   }
 
-  public void setDate(long date) {
+  public void setDate(Long date) {
     this.date = date;
   }
 

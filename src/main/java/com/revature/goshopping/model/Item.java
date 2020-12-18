@@ -1,23 +1,25 @@
 package com.revature.goshopping.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Item {
   private int id;
 
-  private float price;
+  private Float price;
 
   private String description;
 
   private String name;
+  
+  private List<Tag> tags = new ArrayList<>();
 
-  private List<Tag> tags;
-
+  // for jackson
   protected Item() {
 
   }
 
-  public Item(int id, float price, String description, String name,
+  public Item(int id, Float price, String description, String name,
       List<Tag> tags) {
     this.id = id;
     this.price = price;
@@ -34,11 +36,11 @@ public class Item {
     this.id = id;
   }
 
-  public float getPrice() {
+  public Float getPrice() {
     return price;
   }
 
-  public void setPrice(float price) {
+  public void setPrice(Float price) {
     this.price = price;
   }
 
