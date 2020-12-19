@@ -1,20 +1,41 @@
 package com.revature.goshopping.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.revature.goshopping.model.Auth;
+import com.revature.goshopping.utility.JwtUtility;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/demos")
 public class DemoController {
-  /*
-    TODO how to log every request?
-    with servlets we could have all our servlets extend our own custom servlet
-    which could override the service method and log each request there.
+  @GetMapping("/login")
+  public String loginDemo() {
+    Auth auth = new Auth(10, true);
+    String jwt = null;
 
-    TODO make sure cors works
-   */
+    try {
+      jwt = JwtUtility.create(auth);
+    } catch (JsonProcessingException e) { }
+
+    return jwt;
+  }
+
+  @GetMapping("/parse_jwt")
+  public String gettingTheAuth(@RequestHeader Map<String, String> headers) {
+    System.out.println(headers);
+    // assuming the headers.get("Authorization"] is set to
+    // "Bearer <JWT>", where the jwt is valid, the following getAuth method
+    // should return the auth object it contains. null if its not or doesnt
+    // exist.
+    Auth auth = JwtUtility.getAuth(headers);
+    return "i parsed from the jwt in the headers an auth object = " + auth;
+  }
+
+
 	@ResponseBody
   @GetMapping
   public List<Demo> getDemos() {

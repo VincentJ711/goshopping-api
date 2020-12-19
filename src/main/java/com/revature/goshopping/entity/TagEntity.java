@@ -10,6 +10,7 @@ public class TagEntity {
   @Column(name = "tag_id")
   private int id;
 
+  @Column(unique = true)
   private String name;
 
   public TagEntity() {

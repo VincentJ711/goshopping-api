@@ -29,4 +29,9 @@ public class Auth {
   public void setAdmin(boolean admin) {
     this.admin = admin;
   }
+
+  @Override
+  public String toString() {
+    return "Auth{id=" + id + ", admin=" + admin + '}';
+  }
 }
