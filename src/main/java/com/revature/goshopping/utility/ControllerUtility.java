@@ -24,7 +24,6 @@ public class ControllerUtility {
   }
 
   private static <T> ResponseEntity<T> onError(Throwable e) {
-    e.printStackTrace();
     return onError(new ServiceException(e));
   }
 
