@@ -31,7 +31,7 @@ public class ControllerUtility {
     if (err.status == HttpStatus.INTERNAL_SERVER_ERROR) {
       err.printStackTrace();
     } else {
-      System.err.println(err.getMessage());
+      System.out.println(err.toString());
     }
     return new ResponseEntity<>(null, err.status);
   }
