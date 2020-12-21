@@ -1,7 +1,15 @@
 package com.revature.goshopping.dao;
 
+import javax.persistence.NoResultException;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.revature.goshopping.entity.UserEntity;
 
+@Transactional
 public class UserDaoForLoginService {
 
   /**
@@ -10,7 +18,22 @@ public class UserDaoForLoginService {
    *
    * @return nullable UserEntity
    */
-  public UserEntity fromUsername(String username) throws Exception {
-    return null;
-  }
+  //public UserEntity fromUsername(String username) throws Exception {
+	  //return null;
+	  //Hisham's code: implemented the following method for testing purposes only--- who's going to build the DAO
+	  //can change it 
+	
+//	@Autowired
+//	SessionFactory sessionFactory;
+//	
+//	public UserEntity fromUsername(String username) throws NoResultException {
+//		Session session = sessionFactory.getCurrentSession();
+//		try {
+//			return session.createQuery("from UserEntity u where username= :username", UserEntity.class)
+//					.setParameter("username", username).getSingleResult();
+//			// catch NoResultException if user is not found and returns null
+//		}catch (NoResultException e) {
+//			return null;
+//		}
+//  }
 }
