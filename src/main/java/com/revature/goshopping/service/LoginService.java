@@ -1,5 +1,6 @@
 package com.revature.goshopping.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revature.goshopping.dao.UserDaoForLoginService;
 import com.revature.goshopping.entity.UserEntity;
 import com.revature.goshopping.exception.ServiceException;
@@ -22,18 +23,25 @@ public class LoginService {
    */
   public LoginResponse login(String username, String password)
       throws ServiceException {
+    UserEntity dbUser;
+
     try {
-      UserEntity dbUser = dao.fromUsername(username);
-
-      if (dbUser == null) {
-        throw new ServiceException(HttpStatus.NOT_FOUND);
-      } else if (!PasswordUtility.doesMatch(password, dbUser.getPassword())) {
-        throw new ServiceException(HttpStatus.UNAUTHORIZED, "wrong password!");
-      }
-
-      Auth auth = new Auth(dbUser.getId(), dbUser.isAdmin());
-      return new LoginResponse(JwtUtility.create(auth));
+      dbUser = dao.fromUsername(username);
     } catch (Exception e) {
+      throw new ServiceException(e);
+    }
+
+    if (dbUser == null) {
+      throw new ServiceException(HttpStatus.NOT_FOUND);
+    } else if (!PasswordUtility.doesMatch(password, dbUser.getPassword())) {
+      throw new ServiceException(HttpStatus.UNAUTHORIZED, "wrong password!");
+    }
+
+    Auth auth = new Auth(dbUser.getId(), dbUser.isAdmin());
+
+    try {
+      return new LoginResponse(JwtUtility.create(auth));
+    } catch (JsonProcessingException e) {
       throw new ServiceException(e);
     }
   }
