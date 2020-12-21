@@ -3,4 +3,4 @@
 .classpath
 .settings/
 .idea/
-goshopping-api.iml
+*.iml

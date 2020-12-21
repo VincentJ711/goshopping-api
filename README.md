@@ -15,10 +15,10 @@ ensure the database you refer to in env.DB_URL exists. Note the possible values 
 
 ### running
 
-one way to run is to use the maven tomcat7 plugin
+one way to run is to use the maven tomee plugin
 
 ``` 
-mvn package tomcat7:run
+mvn package tomee:run
 ```
 
 ### high level relationships
