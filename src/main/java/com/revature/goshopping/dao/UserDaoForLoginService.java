@@ -1,28 +1,24 @@
 package com.revature.goshopping.dao;
 
-import javax.persistence.NoResultException;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.revature.goshopping.entity.UserEntity;
 
-@Transactional
 public class UserDaoForLoginService {
 
-  /**
-   * im not sure if hibernate throws an error if user is not found. if it does,
-   * catch that SPECIFIC error, and return null. dont catch any other errors.
-   *
-   * @return nullable UserEntity
-   */
-  //public UserEntity fromUsername(String username) throws Exception {
-	  //return null;
-	  //Hisham's code: implemented the following method for testing purposes only--- who's going to build the DAO
-	  //can change it 
-	
+	/**
+	 * im not sure if hibernate throws an error if user is not found. if it does,
+	 * catch that SPECIFIC error, and return null. dont catch any other errors.
+	 *
+	 * @return nullable UserEntity
+	 */
+	public UserEntity fromUsername(String username) throws Exception {
+		return null;
+	}
+	// public UserEntity fromUsername(String username) throws Exception {
+	// return null;
+	// Hisham's code: implemented the following method for testing purposes only---
+	// who's going to build the DAO
+	// can change it
+
 //	@Autowired
 //	SessionFactory sessionFactory;
 //	
@@ -36,4 +32,5 @@ public class UserDaoForLoginService {
 //			return null;
 //		}
 //  }
+
 }
