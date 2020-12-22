@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.goshopping.dto.Auth;
+import com.revature.goshopping.dto.LoginForm;
+import com.revature.goshopping.dto.LoginResponse;
 import com.revature.goshopping.exception.ServiceException;
-import com.revature.goshopping.model.Auth;
-import com.revature.goshopping.model.LoginForm;
-import com.revature.goshopping.model.LoginResponse;
 import com.revature.goshopping.service.LoginService;
 import com.revature.goshopping.utility.ControllerUtility;
 

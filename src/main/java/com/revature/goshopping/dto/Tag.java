@@ -1,4 +1,4 @@
-package com.revature.goshopping.model;
+package com.revature.goshopping.dto;
 
 public class Tag {
   private int id;

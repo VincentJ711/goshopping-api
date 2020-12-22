@@ -18,7 +18,7 @@ public class ItemEntity {
 
   private String description;
 
-  @ManyToMany(cascade = {CascadeType.PERSIST})
+  @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
   @JoinTable(
       name = "item_tag",
       joinColumns = @JoinColumn(name = "item_id"),
@@ -80,4 +80,11 @@ public class ItemEntity {
   public void setTags(Set<TagEntity> tags) {
     this.tags = tags;
   }
+
+@Override
+public String toString() {
+	return "ItemEntity [id=" + id + ", price=" + price + ", name=" + name + ", description=" + description + ", tags="
+			+ tags + "]";
+}
+  
 }

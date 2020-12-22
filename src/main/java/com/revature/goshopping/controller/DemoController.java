@@ -1,8 +1,8 @@
 package com.revature.goshopping.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.revature.goshopping.dto.Auth;
 import com.revature.goshopping.exception.ServiceException;
-import com.revature.goshopping.model.Auth;
 import com.revature.goshopping.utility.ControllerUtility;
 import com.revature.goshopping.utility.JwtUtility;
 import org.springframework.http.HttpStatus;

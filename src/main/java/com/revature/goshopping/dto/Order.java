@@ -1,4 +1,4 @@
-package com.revature.goshopping.model;
+package com.revature.goshopping.dto;
 
 import java.util.ArrayList;
 import java.util.List;

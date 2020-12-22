@@ -2,7 +2,8 @@ package com.revature.goshopping.utility;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.goshopping.model.Auth;
+import com.revature.goshopping.dto.Auth;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 

@@ -1,4 +1,4 @@
-package com.revature.goshopping.model;
+package com.revature.goshopping.dto;
 
 /**
  * meant to be sent back to the client on POST /login in the body
