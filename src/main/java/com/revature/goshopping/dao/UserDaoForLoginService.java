@@ -1,8 +1,19 @@
 package com.revature.goshopping.dao;
 
+import org.springframework.stereotype.Component;
+
 import com.revature.goshopping.entity.UserEntity;
 
+@Component
 public class UserDaoForLoginService {
+	
+	
+
+	public UserDaoForLoginService() {
+		super();
+		System.out.println("UserDAOForLOginService Bean");
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * im not sure if hibernate throws an error if user is not found. if it does,
