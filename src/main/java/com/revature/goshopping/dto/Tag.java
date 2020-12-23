@@ -10,12 +10,7 @@ public class Tag {
 	protected Tag() {
 
 	}
-
-	@Override
-	public String toString() {
-		return "Tag [id=" + id + ", name=" + name + "]";
-	}
-
+	
 	public Tag(int id, String name) {
 		this.id = id;
 		this.name = name;
@@ -30,9 +25,9 @@ public class Tag {
 		this.name = tagEntity.getName();
 	}
 
-	public int getId() {
-		return id;
-	}
+  public int getId() {
+    return id;
+  }
 
 	public void setId(int id) {
 		this.id = id;
@@ -44,5 +39,10 @@ public class Tag {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Tag [id=" + id + ", name=" + name + "]";
 	}
 }

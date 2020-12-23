@@ -1,5 +1,7 @@
 package com.revature.goshopping.entity;
 
+import com.revature.goshopping.dto.Order;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.HashSet;

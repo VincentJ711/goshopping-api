@@ -27,9 +27,11 @@ public class OrderDao {
 
     @SuppressWarnings("unchecked")
     public List<OrderEntity> getOrdersForUser(int id) throws Exception {
+        String queryString = "select o from UserEntity u " +
+            "inner join u.orders o where u.id = :id";
         return sessionFactory
             .getCurrentSession()
-            .createQuery("from OrderEntity where userId = :id")
+            .createQuery(queryString)
             .setParameter("id", id)
             .list();
     }
@@ -40,11 +42,5 @@ public class OrderDao {
             .getCurrentSession()
             .createQuery("from OrderEntity")
             .list();
-    }
-
-    public void removeOrder(int id) throws Exception {
-        OrderEntity order = new OrderEntity();
-        order.setId(id);
-        sessionFactory.getCurrentSession().delete(order);
     }
 }

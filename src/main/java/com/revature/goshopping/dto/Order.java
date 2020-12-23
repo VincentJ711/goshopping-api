@@ -1,5 +1,8 @@
 package com.revature.goshopping.dto;
 
+import com.revature.goshopping.entity.ItemOrderEntity;
+import com.revature.goshopping.entity.OrderEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,15 @@ public class Order {
     this.date = date;
     this.userID = userID;
     this.items = items;
+  }
+
+  public Order(OrderEntity order) {
+    for (ItemOrderEntity ioe : order.getItemOrders()) {
+      this.items.add(new OrderItem(ioe));
+    }
+    setId(order.getId());
+    setDate(order.getDate().getTime());
+    setUserID(order.getUser().getId());
   }
 
   public int getId() {
