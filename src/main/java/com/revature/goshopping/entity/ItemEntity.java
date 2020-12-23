@@ -1,6 +1,9 @@
 package com.revature.goshopping.entity;
 
 import javax.persistence.*;
+
+import com.revature.goshopping.dto.Item;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +21,7 @@ public class ItemEntity {
 
   private String description;
 
-  @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+  @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
   @JoinTable(
       name = "item_tag",
       joinColumns = @JoinColumn(name = "item_id"),
@@ -35,6 +38,12 @@ public class ItemEntity {
     this.price = price;
     this.name = name;
     this.description = description;
+  }
+  
+  public ItemEntity(Item item) {
+	  this.price = item.getPrice();
+	  this.name = item.getName();
+	  this.description = item.getDescription();
   }
 
   public void addTag(TagEntity tag) {

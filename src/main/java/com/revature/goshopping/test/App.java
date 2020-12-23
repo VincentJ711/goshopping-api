@@ -3,10 +3,13 @@ package com.revature.goshopping.test;
 
 import com.revature.goshopping.config.AppConfig;
 import com.revature.goshopping.dao.ItemDao;
+import com.revature.goshopping.dto.Item;
+import com.revature.goshopping.dto.Tag;
 import com.revature.goshopping.entity.ItemEntity;
 import com.revature.goshopping.entity.OrderEntity;
 import com.revature.goshopping.entity.TagEntity;
 import com.revature.goshopping.entity.UserEntity;
+import com.revature.goshopping.service.ItemService;
 import com.revature.goshopping.utility.HibernateUtility;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -20,44 +23,32 @@ public class App {
 //    example1();
 		//example2();
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-		ItemDao itemDao = context.getBean(ItemDao.class);
-		TagEntity foodTag = new TagEntity("food");
-		TagEntity entertainmentTag = new TagEntity("entertainment");
-		ItemEntity cupcakes = new ItemEntity(2.5F, "Cupcakes", "these are cupcakes");
-		ItemEntity diehard = new ItemEntity(10F, "Die hard", "this is die hard");
-		cupcakes.addTag(foodTag);
-		diehard.addTag(entertainmentTag);
+		ItemService serv = context.getBean(ItemService.class);
+		System.out.println(serv.getItems());
+		System.out.println(serv.getItem(12));
+		System.out.println(serv.searchItems("cup"));
+		System.out.println(serv.getItemsbyTag("food"));
+		System.out.println(serv.searchItems("cup", "nothing"));
+//		Item cupcakes = new Item(2.5F, "Cupcakes", "these are cupcakes");
+//		Tag foodTag = new Tag("food");
+//		cupcakes.addTag(foodTag);
+//		serv.addItem(cupcakes);
+//		serv.removeItem(16);
+//		ItemDao itemDao = context.getBean(ItemDao.class);
+//		TagEntity foodTag = new TagEntity("food");
+//		TagEntity entertainmentTag = new TagEntity("entertainment");
+//		ItemEntity cupcakes = new ItemEntity(2.5F, "Cupcakes", "these are cupcakes");
+//		ItemEntity diehard = new ItemEntity(10F, "Die hard", "this is die hard");
+//		cupcakes.addTag(foodTag);
+//		diehard.addTag(entertainmentTag);
 //		itemDao.addItem(cupcakes);
 //		itemDao.addItem(diehard);
 //		System.out.println(itemDao.getItems());
 //		System.out.println(itemDao.getTag("food"));
 //		System.out.println(itemDao.getTag("nothing"));
-		System.out.println(itemDao.searchItems("die", "entertainment"));
+//		System.out.println(itemDao.searchItems("die", "entertainment"));
 //		itemDao.searchItems("cup");
 //		itemDao.getItemsbyTag("food");
-	}
-
-	public static void example2() {
-		try {
-			TagEntity foodTag = new TagEntity("food");
-			TagEntity entertainmentTag = new TagEntity("entertainment");
-			ItemEntity cupcakes = new ItemEntity(2.5F, "Cupcakes", "these are cupcakes");
-			ItemEntity diehard = new ItemEntity(10F, "Die hard", "this is die hard");
-			cupcakes.addTag(foodTag);
-			diehard.addTag(entertainmentTag);
-			ItemDao dao = new ItemDao();
-			dao.addItem(cupcakes);
-			dao.addItem(diehard);
-			System.out.println(dao.getItems());
-			dao.removeItem(1);
-			System.out.println(dao.getTag("food"));
-			System.out.println(dao.getTag("nothing"));
-			dao.searchItems("die", "entertainment");
-			dao.searchItems("cup");
-			dao.getItemsbyTag("food");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void example1() {
