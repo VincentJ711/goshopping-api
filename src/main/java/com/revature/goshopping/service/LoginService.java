@@ -1,6 +1,5 @@
 package com.revature.goshopping.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revature.goshopping.dao.UserDaoForLoginService;
 import com.revature.goshopping.dto.Auth;
 import com.revature.goshopping.dto.LoginResponse;
@@ -14,22 +13,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
-	
-	@Autowired
+  @Autowired
   UserDaoForLoginService dao;
 
   /**
    * @return a not null LoginResponse.
    */
   public LoginResponse login(String username, String password)
-      throws ServiceException {
-    UserEntity dbUser;
-
-    try {
-      dbUser = dao.fromUsername(username);
-    } catch (Exception e) {
-      throw new ServiceException(e);
-    }
+      throws Exception {
+    UserEntity dbUser = dao.fromUsername(username);
 
     if (dbUser == null) {
       throw new ServiceException(HttpStatus.NOT_FOUND);
@@ -38,11 +30,6 @@ public class LoginService {
     }
 
     Auth auth = new Auth(dbUser.getId(), dbUser.isAdmin());
-
-    try {
-      return new LoginResponse(JwtUtility.create(auth));
-    } catch (JsonProcessingException e) {
-      throw new ServiceException(e);
-    }
+    return new LoginResponse(JwtUtility.create(auth));
   }
 }

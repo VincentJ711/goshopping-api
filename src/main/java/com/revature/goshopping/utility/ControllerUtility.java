@@ -19,12 +19,8 @@ public class ControllerUtility {
     } catch (ServiceException e) {
       return onError(e);
     } catch (Throwable e) {
-      return onError(e);
+      return onError(new ServiceException(e));
     }
-  }
-
-  private static <T> ResponseEntity<T> onError(Throwable e) {
-    return onError(new ServiceException(e));
   }
 
   private static <T> ResponseEntity<T> onError(ServiceException err) {
