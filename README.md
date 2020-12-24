@@ -1,4 +1,12 @@
+![Build Status](http://54.151.78.250:8080/jenkins/buildStatus/icon?job=coffeeshop-uiTODO/dev&subject=%5Bdev%5D%20took%20$%7Bduration%7D%20about%20$%7BstartTime%7D%20ago)
+
 ## goshopping-api
+
+This api is hosted on ec2 @ `http://54.151.78.250:8080`.
+
+The base route for any commit on the dev branch is `/goshopping-api`.
+
+The base route for any other commit is `/goshopping-api-{COMMIT_HASH[0..7]}`.
 
 ### setup
 
