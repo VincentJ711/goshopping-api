@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class UserDao {
 		return sessionFactory.getCurrentSession().createQuery("from UserEntity").list();
 	}
 
-	public int addUser(UserEntity user) throws Exception {
+	public int addUser(UserEntity user) throws ConstraintViolationException, Exception {
 
 		return (int) sessionFactory.getCurrentSession().save(user);
 	}
