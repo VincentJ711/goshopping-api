@@ -17,13 +17,13 @@ public class HibernateConfig {
 
   @Bean
   public DataSource dataSource() {
-    System.out.println("\n\n\nDB_URL = " + System.getenv("DB_URL"));
+    System.out.println("\n\n\nDB_URL = " + System.getProperty("DB_URL"));
 
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
-		dataSource.setUrl(System.getenv("DB_URL"));
-		dataSource.setUsername(System.getenv("DB_USERNAME"));
-		dataSource.setPassword(System.getenv("DB_PASSWORD"));
+		dataSource.setUrl(System.getProperty("DB_URL"));
+		dataSource.setUsername(System.getProperty("DB_USERNAME"));
+		dataSource.setPassword(System.getProperty("DB_PASSWORD"));
 	
 		
 		return dataSource;
@@ -48,10 +48,10 @@ public class HibernateConfig {
 	}
 	
 	private final Properties hibernateProperties() {
-		System.out.println("\n\n\nhbm2 = " + System.getenv("HBM2_DDL_AUTO"));
+		System.out.println("\n\n\nhbm2 = " + System.getProperty("HBM2_DDL_AUTO"));
 
 		Properties hibernateProperties = new Properties();
-		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", System.getenv("HBM2_DDL_AUTO"));
+		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", System.getProperty("HBM2_DDL_AUTO"));
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
 		
 		return hibernateProperties;
