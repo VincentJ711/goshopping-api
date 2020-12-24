@@ -17,8 +17,8 @@ public class HibernateConfig {
 	
 	@Bean
 	public DataSource dataSource() {
-		System.out.println(System.getenv("DB_URL"));
-		
+		System.out.println("\n\n\nDB_URL = " + System.getenv("DB_URL"));
+
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
 		dataSource.setUrl(System.getenv("DB_URL"));
@@ -48,6 +48,8 @@ public class HibernateConfig {
 	}
 	
 	private final Properties hibernateProperties() {
+		System.out.println("\n\n\nhbm2 = " + System.getenv("HBM2_DDL_AUTO"));
+
 		Properties hibernateProperties = new Properties();
 		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", System.getenv("HBM2_DDL_AUTO"));
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
