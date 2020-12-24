@@ -7,6 +7,7 @@ import com.revature.goshopping.dto.User;
 import com.revature.goshopping.entity.UserEntity;
 import com.revature.goshopping.exception.ServiceException;
 import com.revature.goshopping.utility.PasswordUtility;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -43,17 +44,20 @@ public class UserService {
     UserEntity userEntity = new UserEntity(
         user.getUsername(),
         PasswordUtility.hash(user.getPassword()),
-        user.getAdmin()
+        false
     );
 
-    userDAO.addUser(userEntity);
-
-    return new User(
-        userEntity.getId(),
-        userEntity.getUsername(),
-        userEntity.isAdmin(),
-        null
-    );
+    try {
+    	userDAO.addUser(userEntity);
+        return new User(
+            userEntity.getId(),
+            userEntity.getUsername(),
+            userEntity.isAdmin(),
+            null
+        );
+    } catch (ConstraintViolationException e) {
+    	throw new ServiceException(HttpStatus.CONFLICT);
+    }
   }
 
   public User findUserFromService(Auth auth, int id) throws Exception {
