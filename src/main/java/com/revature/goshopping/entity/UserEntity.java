@@ -1,6 +1,10 @@
 package com.revature.goshopping.entity;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +23,12 @@ public class UserEntity {
 
   private boolean admin;
 
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @OneToMany(
       mappedBy = "user",
-      cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+     //cascade = {CascadeType.PERSIST},
+      cascade = CascadeType.REMOVE,
+      fetch = FetchType.EAGER
   )
   private Set<OrderEntity> orders = new HashSet<>();
 
@@ -79,4 +86,12 @@ public class UserEntity {
   public void setOrders(Set<OrderEntity> orders) {
     this.orders = orders;
   }
+
+@Override
+public String toString() {
+	return "UserEntity [id=" + id + ", username=" + username + ", password=" + password + ", admin=" + admin
+			+ ", orders=" + orders + "]";
+}
+  
+  
 }

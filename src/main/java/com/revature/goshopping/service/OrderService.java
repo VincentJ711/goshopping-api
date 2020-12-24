@@ -2,7 +2,7 @@ package com.revature.goshopping.service;
 
 import com.revature.goshopping.dao.ItemDao;
 import com.revature.goshopping.dao.OrderDao;
-import com.revature.goshopping.dao.UserDaoForOrderService;
+import com.revature.goshopping.dao.UserDao;
 import com.revature.goshopping.dto.Auth;
 import com.revature.goshopping.dto.Order;
 import com.revature.goshopping.dto.OrderItem;
@@ -27,7 +27,7 @@ public class OrderService {
   OrderDao orderDao;
 
   @Autowired
-  UserDaoForOrderService userDao;
+  UserDao userDao;
 
   @Autowired
   ItemDao itemDao;
@@ -82,6 +82,7 @@ public class OrderService {
 
   /**
    * creates an order for the user with the userID on the given order.
+   *
    * @return the order we created.
    */
   public Order createOrder(Auth auth, Order givenOrder) throws Exception {
@@ -97,7 +98,7 @@ public class OrderService {
       throw new ServiceException(HttpStatus.FORBIDDEN);
     }
 
-    UserEntity user = userDao.getById(userID);
+    UserEntity user = userDao.getUserById(userID);
 
     if (user == null) {
       throw new ServiceException(HttpStatus.BAD_REQUEST, "can't create an " +

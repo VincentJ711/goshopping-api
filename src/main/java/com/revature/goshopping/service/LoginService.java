@@ -1,6 +1,6 @@
 package com.revature.goshopping.service;
 
-import com.revature.goshopping.dao.UserDaoForLoginService;
+import com.revature.goshopping.dao.UserDao;
 import com.revature.goshopping.dto.Auth;
 import com.revature.goshopping.dto.LoginResponse;
 import com.revature.goshopping.entity.UserEntity;
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginService {
   @Autowired
-  UserDaoForLoginService dao;
+  private UserDao userDao;
 
   /**
    * @return a not null LoginResponse.
    */
   public LoginResponse login(String username, String password)
       throws Exception {
-    UserEntity dbUser = dao.fromUsername(username);
+    UserEntity dbUser = userDao.getUserByUsername(username);
 
     if (dbUser == null) {
       throw new ServiceException(HttpStatus.NOT_FOUND);
