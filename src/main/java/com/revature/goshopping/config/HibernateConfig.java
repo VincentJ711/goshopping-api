@@ -14,10 +14,10 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 public class HibernateConfig {
-	
-	@Bean
-	public DataSource dataSource() {
-		System.out.println("\n\n\nDB_URL = " + System.getenv("DB_URL"));
+
+  @Bean
+  public DataSource dataSource() {
+    System.out.println("\n\n\nDB_URL = " + System.getenv("DB_URL"));
 
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
