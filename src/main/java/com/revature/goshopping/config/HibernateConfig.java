@@ -1,8 +1,5 @@
 package com.revature.goshopping.config;
 
-import java.util.Properties;
-
-import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,12 +8,17 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
+import java.util.Properties;
+
 @Configuration
 @EnableTransactionManagement
 public class HibernateConfig {
 	
 	@Bean
 	public DataSource dataSource() {
+		System.out.println(System.getenv("DB_URL"));
+		
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
 		dataSource.setUrl(System.getenv("DB_URL"));
