@@ -44,7 +44,8 @@ public class DemoController {
     } else if (num != null && num > 10) {
       throw new ServiceException(HttpStatus.BAD_REQUEST, "num must be <= 10!");
     }
-    return Arrays.asList(new Demo("you provided query param qp=" + num));
+    return Arrays.asList(new Demo("you provided query param qp=" + num +
+        " whatever=" + System.getenv("WHATEVER")));
   }
 
   /**
