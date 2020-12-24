@@ -1,69 +1,41 @@
-![Build Status](http://54.151.78.250:8080/jenkins/buildStatus/icon?job=coffeeshop-uiTODO/dev&subject=%5Bdev%5D%20took%20$%7Bduration%7D%20about%20$%7BstartTime%7D%20ago)
+![Build Status](http://54.151.78.250:8080/jenkins/buildStatus/icon?job=goshopping-api/dev&subject=%5Bdev%5D%20took%20$%7Bduration%7D%20about%20$%7BstartTime%7D%20ago)
 
 ## goshopping-api
 
-This api is hosted on ec2 @ `http://54.151.78.250:8080`.
+This api is hosted on ec2 @ `http://54.151.78.250:8080/goshopping-api`. To be more specific, a tomcat process is actually serving the api.war file generated during the Jenkins build. This unzipped api.war file is our application.
 
-The base route for any commit on the dev branch is `/goshopping-api`.
+### ci/cd setup
 
-The base route for any other commit is `/goshopping-api-{COMMIT_HASH[0..7]}`.
+There is a jenkins application hosted on the same server @ `:8080/jenkins` which contains a multibranch pipeline that's configured to start whenever a push occurs to any branch of this repo. A deployment will occur if and only if a change to the dev branch is made.
 
 ### setup
 
-ensure the following env variables are set to something like
+make sure the database you refer to in the DB_URL below exists and ensure either the following jvm opts are set for the tomcat process
 
 ```
-DB_URL=jdbc:postgresql://localhost:5432/goshopping
-DB_USERNAME=postgres
-DB_PASSWORD=admin
-HBM2_DDL_AUTO=create-only
+-DDB_URL=jdbc:postgresql://.....:5432/goshopping \
+    -DHBM2_DDL_AUTO=update \
+    -DDB_USERNAME=postgres \ 
+    -DDB_PASSWORD=password
 ```
 
-ensure the database you refer to in env.DB_URL exists. Note the possible values for HBM2_DDL_AUTO can be found [here](https://stackoverflow.com/a/43727307/7929314)
+OR they exist as environment variables
 
-### running
+```
+export DB_URL="jdbc://..."
+export ...
+```
 
-one way to run is to use the maven tomee plugin
+Note the jvm opts are required for the tomcat process on the ec2 instance. To make sure they are used, paste the following to the end of `/usr/share/tomcat/conf/tomcat.conf`. Also note you will have to `sudo service tomcat restart` whenever you change this file.
+
+```
+JAVA_OPTS="-DDB_URL=... -DDB_USERNAME=postgres ..."
+```
+
+### running locally
 
 ``` 
-mvn package tomee:run
+DB_USERNAME=postgres DB_PASSWORD=password HBM2_DDL_AUTO=create \
+    DB_URL="jdbc:postgresql://localhost:5432/goshopping" \
+    mvn clean package tomee:run
 ```
-
-### high level relationships
-
-entity objects should be passed to the dao layer which should return entity(s).
-
-models should be created from entities in the service layer. these models should then be passed back to the controller to be sent back to the client as json.
-
-instances of type Auth will should be passed to every service method that requires authentication. it may be nullable. it will be created upon login and returned to the user encoded in a jwt. the user will then pass along this jwt in the Authorization header for any requests that require authentication. The controllers will then parse the jwt from the header into an Auth object and pass this along to the desired service method.
-
-all exceptions including/beneath the service layer should be handled in the service layer and thrown as a ServiceException. the controllers should then handle the exception and return the appropriate response/code. To be continued...
-
-#### models
-
-```
-Tag
-- id
-- name
-
-Item
-- id
-- price
-- description
-- name
-- tags: Tag[]
-
-OrderItem : Item
-- quantity
-
-Order
-- id
-- date
-- userID
-- items: OrderItem[]
-
-User
-- id
-- username
-- admin
-- password

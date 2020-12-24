@@ -14,46 +14,44 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 public class HibernateConfig {
+  private String getenv(String var) {
+    String env = System.getenv(var);
+    return env != null ? env : System.getProperty(var);
+  }
 
   @Bean
   public DataSource dataSource() {
-    System.out.println("\n\n\nDB_URL = " + System.getProperty("DB_URL"));
+    BasicDataSource dataSource = new BasicDataSource();
+    dataSource.setDriverClassName("org.postgresql.Driver");
+    dataSource.setUrl(getenv("DB_URL"));
+    dataSource.setUsername(getenv("DB_USERNAME"));
+    dataSource.setPassword(getenv("DB_PASSWORD"));
+    return dataSource;
+  }
 
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("org.postgresql.Driver");
-		dataSource.setUrl(System.getProperty("DB_URL"));
-		dataSource.setUsername(System.getProperty("DB_USERNAME"));
-		dataSource.setPassword(System.getProperty("DB_PASSWORD"));
-	
-		
-		return dataSource;
-	}
-	
-	@Bean
-	public LocalSessionFactoryBean sessionFactory() {
-		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setPackagesToScan("com.revature.goshopping.entity");
-		sessionFactory.setHibernateProperties(hibernateProperties());
-		
-		return sessionFactory;
-	}
-	
-	@Bean
-	public PlatformTransactionManager hibernateTransactionManager() {
-		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-		transactionManager.setSessionFactory(sessionFactory().getObject());
-		
-		return transactionManager;
-	}
-	
-	private final Properties hibernateProperties() {
-		System.out.println("\n\n\nhbm2 = " + System.getProperty("HBM2_DDL_AUTO"));
+  @Bean
+  public LocalSessionFactoryBean sessionFactory() {
+    LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+    sessionFactory.setDataSource(dataSource());
+    sessionFactory.setPackagesToScan("com.revature.goshopping.entity");
+    sessionFactory.setHibernateProperties(hibernateProperties());
+    return sessionFactory;
+  }
 
-		Properties hibernateProperties = new Properties();
-		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", System.getProperty("HBM2_DDL_AUTO"));
-		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
-		
-		return hibernateProperties;
-	}
+  @Bean
+  public PlatformTransactionManager hibernateTransactionManager() {
+    HibernateTransactionManager transactionManager =
+        new HibernateTransactionManager();
+    transactionManager.setSessionFactory(sessionFactory().getObject());
+    return transactionManager;
+  }
+
+  private Properties hibernateProperties() {
+    Properties hibernateProperties = new Properties();
+    hibernateProperties.setProperty("hibernate.hbm2ddl.auto",
+        getenv("HBM2_DDL_AUTO"));
+    hibernateProperties.setProperty("hibernate.dialect",
+        "org.hibernate.dialect.PostgreSQL95Dialect");
+    return hibernateProperties;
+  }
 }
