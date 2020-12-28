@@ -35,6 +35,8 @@ public class ServiceException extends Exception {
 
   @Override
   public String toString() {
-    return "ServiceException{status=" + status + '}';
+    String msg = getMessage();
+    return msg == null ? "ServiceException{status=" + status + '}' :
+        "ServiceException{status=" + status + ", reason=" + msg + '}';
   }
 }

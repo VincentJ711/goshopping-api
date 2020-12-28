@@ -3,7 +3,6 @@ package com.revature.goshopping.utility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.goshopping.dto.Auth;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -94,8 +93,10 @@ public final class JwtUtility {
       for (String h : headerNames) {
         if (headers.get(h) != null) {
           tokens = headers.get(h).split(" ");
+          break;
         } else if (headers.get(h.toLowerCase()) != null) {
           tokens = headers.get(h.toLowerCase()).split(" ");
+          break;
         }
       }
 

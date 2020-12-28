@@ -1,14 +1,12 @@
 package com.revature.goshopping.dao;
 
 import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.revature.goshopping.entity.ItemEntity;
 import com.revature.goshopping.entity.TagEntity;
 
@@ -20,8 +18,9 @@ public class ItemDao {
 
 	public ItemEntity addItem(ItemEntity item) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
-		for(TagEntity t : item.getTags())
-			session.persist(t);
+		for(TagEntity t : item.getTags()) {
+			session.saveOrUpdate(t);
+		}
 		session.persist(item);
 		return item;
 	}
@@ -31,11 +30,12 @@ public class ItemDao {
 		item.setId(id);
 		sessionFactory.getCurrentSession().delete(item);
 	}
-	
+
 	public ItemEntity updateItem(ItemEntity item) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
-		for(TagEntity t : item.getTags())
-			session.update(t);
+		for(TagEntity t : item.getTags()) {
+			session.saveOrUpdate(t);
+		}
 		session.update(item);
 		return item;
 	}
@@ -44,41 +44,50 @@ public class ItemDao {
 		return sessionFactory.getCurrentSession().get(ItemEntity.class, id);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<ItemEntity> getItems() throws Exception {
-		return sessionFactory.getCurrentSession().createQuery("from ItemEntity").list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<ItemEntity> searchItems(String search) throws Exception {
-		return sessionFactory.getCurrentSession()
-				.createQuery("select i from ItemEntity i "
-						+ "where LOWER(i.name) like :search or LOWER(i.description) like :search")
-				.setParameter("search", "%" + search.toLowerCase() + "%").list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<ItemEntity> searchItems(String search, String name) throws Exception {
-		return sessionFactory.getCurrentSession()
-				.createQuery("select i from ItemEntity i inner join i.tags t "
-						+ "where t.name=:name and (LOWER(i.name) like :search or LOWER(i.name) like :search)")
-				.setParameter("name", name).setParameter("search", "%" + search.toLowerCase() + "%").list();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<ItemEntity> getItemsbyTag(String name) throws Exception {
-		return sessionFactory.getCurrentSession()
-				.createQuery("select i from ItemEntity i inner join i.tags t " + "where t.name=:name")
-				.setParameter("name", name).list();
-	}
-
 	public TagEntity getTag(String name) throws Exception {
 		return (TagEntity) sessionFactory.getCurrentSession().createQuery("from TagEntity where name=:name")
 				.setParameter("name", name).uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<TagEntity> getTags() throws Exception {
-		return sessionFactory.getCurrentSession().createQuery("from TagEntity").list();
+		return sessionFactory.getCurrentSession().createQuery(
+				"select t from TagEntity t", TagEntity.class).list();
+	}
+
+	public List<ItemEntity> searchItems(String text, String tag,
+			Integer quantity, Integer page) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<ItemEntity> query;
+
+		if (text != null && tag != null) {
+			String queryString = "select i from ItemEntity i, IN (i.tags) t " +
+					"where LOWER(i.name) like :text and t.name=:tag";
+			query = session.createQuery(queryString, ItemEntity.class)
+					.setParameter("text", "%" + text.toLowerCase() + "%")
+					.setParameter("tag", tag);
+		} else if (text != null) {
+			String queryString = "select i from ItemEntity i " +
+					"where LOWER(i.name) like :text";
+			query = session.createQuery(queryString, ItemEntity.class)
+					.setParameter("text", "%" + text.toLowerCase() + "%");
+		} else if (tag != null) {
+			String queryString = "select i from ItemEntity i, IN (i.tags) t " +
+					"where t.name=:tag";
+			query = session.createQuery(queryString, ItemEntity.class)
+					.setParameter("tag", tag);
+		} else {
+			query = session.createQuery("select i from ItemEntity i",
+					ItemEntity.class);
+		}
+
+		if (quantity != null && quantity > 0) {
+			query.setMaxResults(quantity);
+
+			if (page != null && page > -1) {
+				query.setFirstResult(quantity * page);
+			}
+		}
+
+		return query.list();
 	}
 }

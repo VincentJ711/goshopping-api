@@ -2,7 +2,7 @@
 
 ## goshopping-api
 
-This api is hosted on ec2 @ `http://54.151.78.250:8080/goshopping-api`. To be more specific, a tomcat process is actually serving the api.war file generated during the Jenkins build. This unzipped api.war file is our application.
+This api is hosted on ec2 @ `http://54.151.78.250:8080/goshopping-api`. To be more specific, a tomcat process is actually serving the api.war file generated during the Jenkins build. This unzipped api.war file is our application. You can find the documentation for this api @ `http://54.151.78.250:8080/goshopping-api/docs/index.html`
 
 ### ci/cd setup
 
@@ -39,3 +39,13 @@ DB_USERNAME=postgres DB_PASSWORD=password HBM2_DDL_AUTO=create \
     DB_URL="jdbc:postgresql://localhost:5432/goshopping" \
     mvn clean package tomee:run
 ```
+
+### generating openapi/swagger documentation
+
+went into the webapp folder and did
+
+``` 
+curl https://codeload.github.com/swagger-api/swagger-ui/tar.gz/master | tar -xz --strip=1 swagger-ui-master/dist && mv dist docs
+```
+
+then modified the ui.url in docs/index.html to be ./api.yaml. then wrote the openspec api docs in the docs/api.yaml file.

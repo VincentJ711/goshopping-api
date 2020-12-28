@@ -1,12 +1,5 @@
 package com.revature.goshopping.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
 import com.revature.goshopping.dao.ItemDao;
 import com.revature.goshopping.dto.Auth;
 import com.revature.goshopping.dto.Item;
@@ -14,6 +7,12 @@ import com.revature.goshopping.dto.Tag;
 import com.revature.goshopping.entity.ItemEntity;
 import com.revature.goshopping.entity.TagEntity;
 import com.revature.goshopping.exception.ServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ItemService {
@@ -40,6 +39,11 @@ public class ItemService {
 			throw new ServiceException(HttpStatus.UNAUTHORIZED, "No auth");
 		} else if (auth.isAdmin()) {
 			ItemEntity itemE = new ItemEntity(item);
+
+			if (dao.getItem(id) == null) {
+				throw new ServiceException(HttpStatus.NOT_FOUND);
+			}
+
 			for (Tag t : item.getTags()) {
 				TagEntity tag = dao.getTag(t.getName());
 				if (tag == null)
@@ -47,39 +51,16 @@ public class ItemService {
 				itemE.addTag(tag);
 			}
 			itemE.setId(id);
-			return new Item(dao.addItem(itemE));
+			return new Item(dao.updateItem(itemE));
 		} else {
 			throw new ServiceException(HttpStatus.FORBIDDEN, "Not admin");
 		}
 	}
 
-	public List<Item> getItems() throws Exception {
-		List<Item> items = new ArrayList<Item>();
-		for (ItemEntity i : dao.getItems()) {
-			items.add(new Item(i));
-		}
-		return items;
-	}
-
-	public List<Item> searchItems(String search) throws Exception {
-		List<Item> items = new ArrayList<Item>();
-		for (ItemEntity i : dao.searchItems(search)) {
-			items.add(new Item(i));
-		}
-		return items;
-	}
-
-	public List<Item> searchItems(String search, String tag) throws Exception {
-		List<Item> items = new ArrayList<Item>();
-		for (ItemEntity i : dao.searchItems(search, tag)) {
-			items.add(new Item(i));
-		}
-		return items;
-	}
-
-	public List<Item> getItemsbyTag(String tag) throws Exception {
-		List<Item> items = new ArrayList<Item>();
-		for (ItemEntity i : dao.getItemsbyTag(tag)) {
+	public List<Item> searchItems(String text, String tag, Integer quantity,
+			Integer page) throws Exception {
+		List<Item> items = new ArrayList<>();
+		for (ItemEntity i : dao.searchItems(text, tag, quantity, page)) {
 			items.add(new Item(i));
 		}
 		return items;
