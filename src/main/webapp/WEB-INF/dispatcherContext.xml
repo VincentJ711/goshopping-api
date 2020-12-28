@@ -9,6 +9,8 @@
 
     <mvc:default-servlet-handler/>
 
+    <mvc:resources location="/docs/" mapping="/docs/**"/>
+
     <!--    <mvc:resources location="/static/" mapping="/static/**"></mvc:resources>-->
 
     <!--    &lt;!&ndash; This is a bean registered on our child dispatcherContext &ndash;&gt;-->

@@ -1,0 +1,457 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: "GoShopping API"
+  description: "This is a api"
+servers:
+  - url: 'http://localhost:4321/api'
+paths:
+  /login:
+    post:
+      summary: "recieve a jwt to authenticate to most endpoints in this api"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+  /user:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: get all users
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserList"
+    post:
+      summary: create a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostableUser"
+      responses:
+        200:
+          description: "the created user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    put:
+      security:
+        - bearerAuth: [ ]
+      summary: update your password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutableUser"
+      responses:
+        200:
+          description: "the updated user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /user/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: represents the user you want to do an HTTP method on
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: get a user
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    delete:
+      security:
+        - bearerAuth: [ ]
+      summary: delete a user
+      responses:
+        200:
+          description: ""
+  /tags:
+    get:
+      summary: 'get all item tags'
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TagList"
+  /item:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: 'get/search items'
+      parameters:
+        - in: query
+          name: text
+          schema:
+            type: string
+          description: 'filter items with name containing this text'
+        - in: query
+          name: tag
+          schema:
+            type: string
+          description: 'filter items with a tag equal to this'
+        - in: query
+          name: quantity
+          schema:
+            type: number
+          description: 'how many items you want in the result set'
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: 'Without paging, you get a result set R. Now add this page parameter and the first item in the result set will be the (page * quantity)th item in R'
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemList"
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: create an item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostableItem"
+      responses:
+        200:
+          description: "the created item"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+  /item/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: represents the item you want to do an HTTP method on
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: get an item
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+    put:
+      security:
+        - bearerAuth: [ ]
+      summary: update the item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutableItem"
+      responses:
+        200:
+          description: "the updated item"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+  /order:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: 'get orders'
+      parameters:
+        - in: query
+          name: uid
+          schema:
+            type: integer
+          description: 'the id of the user you want to see orders for'
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderList"
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: create an order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostableOrder"
+      responses:
+        200:
+          description: "the created order"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+  /order/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: represents the item you want to do an HTTP method on
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: get an order
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginRequest:
+      type: "object"
+      required:
+        - "username"
+        - "password"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+    LoginResponse:
+      type: "object"
+      required:
+        - "jwt"
+      properties:
+        jwt:
+          type: "string"
+          default: 'eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MDYxMTkwMDEsImV4cCI6MTYwNjExOTA2MSwiYXV0aCI6IntcInVzZXJJRFwiOjIsXCJhZG1pblwiOmZhbHNlfSJ9.zAh8yvcL5PkEuidNOwRs6rxc1gZ1ztMeGUno_dzXnZo'
+    UserList:
+      type: 'array'
+      items:
+        $ref: '#/components/schemas/User'
+    User:
+      type: "object"
+      required:
+        - id
+        - username
+        - admin
+      properties:
+        id:
+          type: 'integer'
+        username:
+          type: "string"
+        admin:
+          type: 'boolean'
+    PutableUser:
+      type: "object"
+      required:
+        - newPass
+        - oldPass
+      properties:
+        newPass:
+          type: "string"
+        oldPass:
+          type: "string"
+    PostableUser:
+      type: "object"
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+    TagList:
+      type: 'array'
+      items:
+        $ref: '#/components/schemas/Tag'
+    Tag:
+      type: 'object'
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: 'integer'
+        name:
+          type: "string"
+    BareTagList:
+      type: 'array'
+      items:
+        $ref: '#/components/schemas/BareTag'
+    BareTag:
+      type: 'object'
+      required:
+        - name
+      properties:
+        name:
+          type: 'string'
+    ItemList:
+      type: 'array'
+      items:
+        $ref: '#/components/schemas/Item'
+    Item:
+      type: 'object'
+      required:
+        - id
+        - name
+        - price
+        - description
+        - tags
+      properties:
+        id:
+          type: 'integer'
+        name:
+          type: "string"
+        price:
+          type: 'number'
+        description:
+          type: 'string'
+        tags:
+          $ref: '#/components/schemas/TagList'
+    PostableItem:
+      type: 'object'
+      required:
+        - name
+        - price
+        - description
+        - tags
+      properties:
+        name:
+          type: "string"
+        price:
+          type: 'number'
+        description:
+          type: 'string'
+        tags:
+          $ref: '#/components/schemas/BareTagList'
+    PutableItem:
+      type: 'object'
+      required:
+        - name
+        - price
+        - description
+        - tags
+      properties:
+        name:
+          type: "string"
+        price:
+          type: 'number'
+        description:
+          type: 'string'
+        tags:
+          $ref: '#/components/schemas/BareTagList'
+    OrderItemList:
+      type: 'array'
+      items:
+        $ref: '#/components/schemas/OrderItem'
+    OrderItem:
+      type: 'object'
+      required:
+        - id
+        - name
+        - price
+        - description
+        - tags
+        - quantity
+      properties:
+        id:
+          type: 'integer'
+        name:
+          type: "string"
+        price:
+          type: 'number'
+        description:
+          type: 'string'
+        tags:
+          $ref: '#/components/schemas/TagList'
+        quantity:
+          type: 'integer'
+    PostableOrderItemList:
+      type: 'array'
+      items:
+        $ref: '#/components/schemas/PostableOrderItem'
+    PostableOrderItem:
+      type: 'object'
+      required:
+        - id
+        - quantity
+      properties:
+        id:
+          type: 'integer'
+        quantity:
+          type: 'integer'
+    OrderList:
+      type: 'array'
+      items:
+        $ref: '#/components/schemas/Order'
+    Order:
+      type: 'object'
+      required:
+        - id
+        - date
+        - userID
+        - items
+      properties:
+        id:
+          type: 'integer'
+        date:
+          type: 'integer'
+        userID:
+          type: 'integer'
+        items:
+          $ref: '#/components/schemas/OrderItemList'
+    PostableOrder:
+      type: 'object'
+      required:
+        - userID
+        - items
+      properties:
+        userID:
+          type: 'integer'
+        items:
+          $ref: '#/components/schemas/PostableOrderItemList'

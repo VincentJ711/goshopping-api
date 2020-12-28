@@ -1,30 +1,17 @@
 package com.revature.goshopping.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.revature.goshopping.dto.Auth;
-import com.revature.goshopping.dto.LoginForm;
-import com.revature.goshopping.dto.LoginResponse;
 import com.revature.goshopping.dto.SwapPassword;
 import com.revature.goshopping.dto.User;
 import com.revature.goshopping.service.UserService;
 import com.revature.goshopping.utility.ControllerUtility;
 import com.revature.goshopping.utility.JwtUtility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -69,7 +56,7 @@ public class UserController {
 		});
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("")
 	public ResponseEntity<User> updatePassword(@RequestHeader Map<String, String> headers,
 			@RequestBody SwapPassword newPass) {
 		Auth auth = JwtUtility.getAuth(headers);
