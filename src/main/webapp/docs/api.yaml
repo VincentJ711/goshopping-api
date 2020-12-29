@@ -351,6 +351,8 @@ components:
           type: 'number'
         description:
           type: 'string'
+        img:
+          type: 'string'
         tags:
           $ref: '#/components/schemas/TagList'
     PostableItem:
@@ -367,6 +369,8 @@ components:
           type: 'number'
         description:
           type: 'string'
+        img:
+          type: 'string'
         tags:
           $ref: '#/components/schemas/BareTagList'
     PutableItem:
@@ -382,6 +386,8 @@ components:
         price:
           type: 'number'
         description:
+          type: 'string'
+        img:
           type: 'string'
         tags:
           $ref: '#/components/schemas/BareTagList'
@@ -406,6 +412,8 @@ components:
         price:
           type: 'number'
         description:
+          type: 'string'
+        img:
           type: 'string'
         tags:
           $ref: '#/components/schemas/TagList'
