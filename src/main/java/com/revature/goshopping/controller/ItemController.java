@@ -23,7 +23,8 @@ public class ItemController {
       @RequestParam(required = false, name = "text") String text,
       @RequestParam(required = false, name = "tag") String tag,
       @RequestParam(required = false, name = "quantity") Integer quantity,
-      @RequestParam(required = false, name = "page") Integer page) {
+      @RequestParam(required = false, name = "page") Integer page,
+      @RequestParam(required = false, name = "sortBy") String sort) {
     return ControllerUtility.handle(() ->
         serv.searchItems(text, tag, quantity, page));
   }
