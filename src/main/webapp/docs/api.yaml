@@ -128,6 +128,15 @@ paths:
           schema:
             type: number
           description: 'Without paging, you get a result set R. Now add this page parameter and the first item in the result set will be the (page * quantity)th item in R'
+        - in: query
+          name: sortBy
+          schema:
+            type: string
+            enum:
+              - price_asc
+              - price_desc
+              - name_asc
+              - name_desc
       responses:
         200:
           description: ""
@@ -199,6 +208,11 @@ paths:
           schema:
             type: integer
           description: 'the id of the user you want to see orders for'
+        - in: query
+          name: username
+          schema:
+            type: string
+          description: 'only orders made by a user with a username containing this will be included in the response'
       responses:
         200:
           description: ""

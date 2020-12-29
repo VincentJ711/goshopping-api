@@ -15,6 +15,11 @@ public class OrderItem extends Item {
 
 	}
 
+	public OrderItem(int itemID, int quantity) {
+		this.id = itemID;
+		this.quantity = quantity;
+	}
+
 	public OrderItem(int id, float price, String description, String name, String img, List<Tag> tags, int quantity) {
 		super(id, price, description, name, img, tags);
 		this.quantity = quantity;
@@ -28,13 +33,13 @@ public class OrderItem extends Item {
 			tags.add(new Tag(tag));
 		}
 
-		setId(item.getId());
-		setPrice(item.getPrice());
-		setDescription(item.getDescription());
-		setName(item.getName());
-		setImg(item.getImg());
-		setTags(tags);
-		setQuantity(ioe.getQuantity());
+		this.id = (item.getId());
+		this.price = item.getPrice();
+		this.description = item.getDescription();
+		this.name = item.getName();
+		this.img = item.getImg();
+		this.tags = tags;
+		this.quantity = ioe.getQuantity();
 	}
 
 	public int getQuantity() {
@@ -43,5 +48,18 @@ public class OrderItem extends Item {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	@Override
+	public String toString() {
+		return "Item{" +
+				"id=" + id +
+				", price=" + price +
+				", quantity=" + quantity +
+				", description='" + description + '\'' +
+				", name='" + name + '\'' +
+				", img='" + img + '\'' +
+				", tags=" + tags +
+				'}';
 	}
 }

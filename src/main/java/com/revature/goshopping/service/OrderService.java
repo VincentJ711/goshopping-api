@@ -98,11 +98,10 @@ public class OrderService {
       throw new ServiceException(HttpStatus.BAD_REQUEST);
     } else if (auth == null) {
       throw new ServiceException(HttpStatus.UNAUTHORIZED);
-    } else if(givenOrder.getStripeToken() == null) {
+    } else if (givenOrder.getStripeToken() == null && !auth.isAdmin()) {
     	throw new ServiceException(HttpStatus.BAD_REQUEST, "No card " +
                 "information has been provided!!");
     }
-    
 
     int userID = givenOrder.getUserID();
 
@@ -153,25 +152,29 @@ public class OrderService {
       itemsForOrderToMake.add(new ItemOrderEntity(ie, orderToMake, quantity));
     }
 
+    if (givenOrder.getStripeToken() != null) {
+      payForOrder((long) (total * 100), givenOrder.getStripeToken());
+    }
+
     orderToMake.setItemOrders(itemsForOrderToMake);
-    
-    // check if the payment processed successfully before adding the order
+    orderDao.addOrder(orderToMake);
+    return new Order(orderToMake);
+  }
+
+  private void payForOrder(long amountInPennies, String token)
+      throws Exception {
     Stripe.apiKey = env.stripeKey;
 
     PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-        .setAmount((long)(total*100))
+        .setAmount(amountInPennies)
         .setCurrency("usd")
-			  .setConfirm(true)
-        .setPaymentMethod(givenOrder.getStripeToken())
+        .setConfirm(true)
+        .setPaymentMethod(token)
         .build();
 
     try {
       PaymentIntent paymentIntent = PaymentIntent.create(params);
-
-      if (paymentIntent.getStatus().contentEquals("succeeded")) {
-        orderDao.addOrder(orderToMake);
-        return new Order(orderToMake);
-      } else {
+      if (!paymentIntent.getStatus().contentEquals("succeeded")) {
         throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR);
       }
     } catch (StripeException e) {

@@ -8,23 +8,17 @@ import com.revature.goshopping.entity.ItemEntity;
 import com.revature.goshopping.entity.TagEntity;
 
 public class Item {
-	private int id;
+	protected int id;
 
-	private Float price;
+	protected Float price;
 
-	private String description;
+	protected String description;
 
-	private String name;
+	protected String name;
 	
-	private String img;
+	protected String img;
 
-	private List<Tag> tags = new ArrayList<>();
-
-	@Override
-	public String toString() {
-		return "Item [id=" + id + ", price=" + price + ", description=" + description + ", name=" + name + ", tags="
-				+ tags + "]";
-	}
+	protected List<Tag> tags = new ArrayList<>();
 
 	// for jackson
 	protected Item() {
@@ -57,11 +51,11 @@ public class Item {
 			this.tags.add(new Tag(t));
 		}
 	}
-	
+
 	@JsonIgnore
 	public boolean isValid() {
 		try {
-			if(this.price < 0.0 || this.description.equals("") || this.name.equals(""))
+			if(this.price < 0.0 || (this.description == null) || this.name.equals(""))
 				return false;
 			return true;
 		} catch(NullPointerException e) {
@@ -119,5 +113,17 @@ public class Item {
 
 	public void setTags(List<Tag> tags) {
 		this.tags = tags;
+	}
+
+	@Override
+	public String toString() {
+		return "Item{" +
+				"id=" + id +
+				", price=" + price +
+				", description='" + description + '\'' +
+				", name='" + name + '\'' +
+				", img='" + img + '\'' +
+				", tags=" + tags +
+				'}';
 	}
 }

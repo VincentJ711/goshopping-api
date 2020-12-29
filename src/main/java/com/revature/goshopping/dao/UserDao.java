@@ -55,11 +55,9 @@ public class UserDao {
 		}
 	}
 
-	public int deleteUserByID(int userId) throws Exception {
-		UserEntity delete = new UserEntity();
-		delete.setId(userId);
-		sessionFactory.getCurrentSession().delete(delete);
-		return 1;
+	public void deleteUserByID(int userId) throws Exception {
+		Session session = sessionFactory.getCurrentSession();
+		session.createQuery("delete from UserEntity where id = " + userId)
+				.executeUpdate();
 	}
-
 }
