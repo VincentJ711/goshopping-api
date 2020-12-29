@@ -11,13 +11,13 @@ public class OrderItem extends Item {
   private int quantity;
 
   // for jackson
-  private OrderItem() {
+  public OrderItem() {
 
   }
 
-  public OrderItem(int id, float price, String description, String name,
+  public OrderItem(int id, float price, String description, String name, String img,
       List<Tag> tags, int quantity) {
-    super(id, price, description, name, tags);
+    super(id, price, description, name, img, tags);
     this.quantity = quantity;
   }
 
@@ -33,6 +33,7 @@ public class OrderItem extends Item {
     setPrice(item.getPrice());
     setDescription(item.getDescription());
     setName(item.getName());
+    setImg(item.getImg());
     setTags(tags);
     setQuantity(ioe.getQuantity());
   }

@@ -35,26 +35,9 @@ public class ItemService {
 	}
 
 	public Item updateItem(Item item, int id, Auth auth) throws Exception {
-		if (auth == null) {
-			throw new ServiceException(HttpStatus.UNAUTHORIZED, "No auth");
-		} else if (auth.isAdmin()) {
-			ItemEntity itemE = new ItemEntity(item);
-
-			if (dao.getItem(id) == null) {
-				throw new ServiceException(HttpStatus.NOT_FOUND);
-			}
-
-			for (Tag t : item.getTags()) {
-				TagEntity tag = dao.getTag(t.getName());
-				if (tag == null)
-					tag = new TagEntity(t.getName());
-				itemE.addTag(tag);
-			}
-			itemE.setId(id);
-			return new Item(dao.updateItem(itemE));
-		} else {
-			throw new ServiceException(HttpStatus.FORBIDDEN, "Not admin");
-		}
+		removeItem(id, auth);
+		item.setId(0);
+		return addItem(item, auth);
 	}
 
 	public List<Item> searchItems(String text, String tag, Integer quantity,
@@ -85,6 +68,7 @@ public class ItemService {
 					tag = new TagEntity(t.getName());
 				itemE.addTag(tag);
 			}
+			itemE.setForSale(true);;
 			return new Item(dao.addItem(itemE));
 		} else {
 			throw new ServiceException(HttpStatus.FORBIDDEN, "Not admin");

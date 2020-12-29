@@ -14,6 +14,8 @@ public class Item {
 	private String description;
 
 	private String name;
+	
+	private String img;
 
 	private List<Tag> tags = new ArrayList<>();
 
@@ -28,18 +30,20 @@ public class Item {
 
 	}
 
-	public Item(int id, Float price, String description, String name, List<Tag> tags) {
+	public Item(int id, Float price, String description, String name, String img, List<Tag> tags) {
 		this.id = id;
 		this.price = price;
 		this.description = description;
 		this.name = name;
+		this.img = img;
 		this.tags = tags;
 	}
 	
-	public Item(Float price, String description, String name) {
+	public Item(Float price, String description, String name, String img) {
 		this.price = price;
 		this.description = description;
 		this.name = name;
+		this.img = img;
 	}
 
 	public Item(ItemEntity itemEntity) {
@@ -47,6 +51,7 @@ public class Item {
 		this.price = itemEntity.getPrice();
 		this.description = itemEntity.getDescription();
 		this.name = itemEntity.getName();
+		this.img = itemEntity.getImg();
 		for (TagEntity t : itemEntity.getTags()) {
 			this.tags.add(new Tag(t));
 		}
@@ -86,6 +91,14 @@ public class Item {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	public List<Tag> getTags() {

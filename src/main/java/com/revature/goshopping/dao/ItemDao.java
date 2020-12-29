@@ -18,17 +18,17 @@ public class ItemDao {
 
 	public ItemEntity addItem(ItemEntity item) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
-		for(TagEntity t : item.getTags()) {
-			session.saveOrUpdate(t);
-		}
-		session.persist(item);
-		return item;
+			for(TagEntity t : item.getTags()) {
+				session.saveOrUpdate(t);
+			}
+			session.persist(item);
+			return item;
 	}
 
 	public void removeItem(int id) throws Exception {
-		ItemEntity item = new ItemEntity();
-		item.setId(id);
-		sessionFactory.getCurrentSession().delete(item);
+		Session session = sessionFactory.getCurrentSession();
+		ItemEntity item = session.get(ItemEntity.class, id);
+		item.setForSale(false);
 	}
 
 	public ItemEntity updateItem(ItemEntity item) throws Exception {
@@ -61,22 +61,22 @@ public class ItemDao {
 
 		if (text != null && tag != null) {
 			String queryString = "select i from ItemEntity i, IN (i.tags) t " +
-					"where LOWER(i.name) like :text and t.name=:tag";
+					"where LOWER(i.name) like :text and (t.name=:tag and i.forSale=true)";
 			query = session.createQuery(queryString, ItemEntity.class)
 					.setParameter("text", "%" + text.toLowerCase() + "%")
 					.setParameter("tag", tag);
 		} else if (text != null) {
 			String queryString = "select i from ItemEntity i " +
-					"where LOWER(i.name) like :text";
+					"where LOWER(i.name) like :text and i.forSale=true";
 			query = session.createQuery(queryString, ItemEntity.class)
 					.setParameter("text", "%" + text.toLowerCase() + "%");
 		} else if (tag != null) {
 			String queryString = "select i from ItemEntity i, IN (i.tags) t " +
-					"where t.name=:tag";
+					"where t.name=:tag and i.forSale=true";
 			query = session.createQuery(queryString, ItemEntity.class)
 					.setParameter("tag", tag);
 		} else {
-			query = session.createQuery("select i from ItemEntity i",
+			query = session.createQuery("from ItemEntity where forSale=true",
 					ItemEntity.class);
 		}
 
