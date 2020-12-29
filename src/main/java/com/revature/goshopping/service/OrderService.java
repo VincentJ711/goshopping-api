@@ -14,7 +14,10 @@ import com.revature.goshopping.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import com.stripe.param.PaymentIntentCreateParams;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -90,7 +93,11 @@ public class OrderService {
       throw new ServiceException(HttpStatus.BAD_REQUEST);
     } else if (auth == null) {
       throw new ServiceException(HttpStatus.UNAUTHORIZED);
+    } else if(givenOrder.getStripeToken() == null) {
+    	throw new ServiceException(HttpStatus.BAD_REQUEST, "No card " +
+                "information has been provided!!");
     }
+    
 
     int userID = givenOrder.getUserID();
 
@@ -115,13 +122,15 @@ public class OrderService {
     if (givenOrder.getItems() != null) {
       givenItems = givenOrder.getItems();
     }
-
+    // total of the order = total price of the items in the order
+    float total = 0;
     for (OrderItem oi : givenItems) {
       if (oi == null) {
         continue;
       }
 
       ItemEntity ie = itemDao.getItem(oi.getId());
+      
       int quantity = oi.getQuantity();
 
       if (ie == null) {
@@ -131,12 +140,36 @@ public class OrderService {
         throw new ServiceException(HttpStatus.BAD_REQUEST, "you cannot " +
             "provide an item in the order with a quantity < 1");
       }
-
+      // add the price for each item to the order total
+      total += ie.getPrice();
       itemsForOrderToMake.add(new ItemOrderEntity(ie, orderToMake, quantity));
     }
 
     orderToMake.setItemOrders(itemsForOrderToMake);
-    orderDao.addOrder(orderToMake);
-    return new Order(orderToMake);
+    
+    // check if the payment processed successfully before adding the order
+    Stripe.apiKey = System.getenv("STRIPE_SK");
+    PaymentIntentCreateParams params = PaymentIntentCreateParams.builder().setAmount((long)total).setCurrency("usd")
+			.setConfirm(true).setPaymentMethod(givenOrder.getStripeToken()).build();
+    try {
+		PaymentIntent paymentIntent = PaymentIntent.create(params);
+
+		if(paymentIntent.getStatus() == "succeeded") {
+			orderDao.addOrder(orderToMake);
+		    return new Order(orderToMake);
+		}else {
+			throw new ServiceException(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	} catch (StripeException e) {
+		// TODO Auto-generated catch block
+
+		e.printStackTrace();
+		String errorMessage = e.getMessage();
+		throw new ServiceException(HttpStatus.PAYMENT_REQUIRED, errorMessage.substring(0, errorMessage.indexOf(';')));
+		
+
+	}
+    
   }
 }
