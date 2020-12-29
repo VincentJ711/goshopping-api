@@ -18,16 +18,11 @@ public class ItemDao {
 
 	public ItemEntity addItem(ItemEntity item) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
-		if(session.createQuery("from ItemEntity i where name=:name and forSale=true")
-				.setParameter("name", item.getName()).list().isEmpty()) {
-			System.out.println(item);
 			for(TagEntity t : item.getTags()) {
 				session.saveOrUpdate(t);
 			}
 			session.persist(item);
-			return item;	
-		}
-		return null;
+			return item;
 	}
 
 	public void removeItem(int id) throws Exception {

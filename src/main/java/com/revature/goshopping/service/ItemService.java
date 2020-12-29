@@ -68,12 +68,8 @@ public class ItemService {
 					tag = new TagEntity(t.getName());
 				itemE.addTag(tag);
 			}
-			itemE.setForSale(true);
-			ItemEntity ret =dao.addItem(itemE);
-			if(ret == null) {
-				throw new ServiceException(HttpStatus.CONFLICT, "Item exists");
-			}
-			return new Item(ret);
+			itemE.setForSale(true);;
+			return new Item(dao.addItem(itemE));
 		} else {
 			throw new ServiceException(HttpStatus.FORBIDDEN, "Not admin");
 		}
