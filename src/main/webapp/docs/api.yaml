@@ -458,8 +458,11 @@ components:
       required:
         - userID
         - items
+        - stripeToken
       properties:
         userID:
           type: 'integer'
         items:
           $ref: '#/components/schemas/PostableOrderItemList'
+        stripeToken:
+          type: 'string'

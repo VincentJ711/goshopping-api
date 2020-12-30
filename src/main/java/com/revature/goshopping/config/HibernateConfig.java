@@ -1,6 +1,7 @@
 package com.revature.goshopping.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -14,18 +15,16 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 public class HibernateConfig {
-  private String getenv(String var) {
-    String env = System.getenv(var);
-    return env != null ? env : System.getProperty(var);
-  }
+  @Autowired
+  private Env env;
 
   @Bean
   public DataSource dataSource() {
     BasicDataSource dataSource = new BasicDataSource();
     dataSource.setDriverClassName("org.postgresql.Driver");
-    dataSource.setUrl(getenv("DB_URL"));
-    dataSource.setUsername(getenv("DB_USERNAME"));
-    dataSource.setPassword(getenv("DB_PASSWORD"));
+    dataSource.setUrl(env.dbUrl);
+    dataSource.setUsername(env.dbUsername);
+    dataSource.setPassword(env.dbPassword);
     return dataSource;
   }
 
@@ -49,7 +48,7 @@ public class HibernateConfig {
   private Properties hibernateProperties() {
     Properties hibernateProperties = new Properties();
     hibernateProperties.setProperty("hibernate.hbm2ddl.auto",
-        getenv("HBM2_DDL_AUTO"));
+        env.hbm2DDLAuto);
     hibernateProperties.setProperty("hibernate.dialect",
         "org.hibernate.dialect.PostgreSQL95Dialect");
     return hibernateProperties;
