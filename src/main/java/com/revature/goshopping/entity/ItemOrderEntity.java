@@ -3,6 +3,7 @@ package com.revature.goshopping.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "item_order")
 public class ItemOrderEntity implements Serializable {

@@ -1,6 +1,10 @@
 package com.revature.goshopping.entity;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +19,7 @@ public class OrderEntity {
 
   private Date date;
 
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @OneToMany(mappedBy = "order", cascade = {CascadeType.REMOVE,
       CascadeType.PERSIST}, fetch = FetchType.EAGER)
   private Set<ItemOrderEntity> itemOrders = new HashSet<>();

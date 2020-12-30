@@ -32,12 +32,14 @@ public class OrderController {
   @GetMapping
   public ResponseEntity<List<Order>> getOrders(
       @RequestHeader Map<String, String> headers,
-      @RequestParam(required = false) Integer uid) {
+      @RequestParam(required = false) Integer uid,
+      @RequestParam(required = false) String userSearch,
+      @RequestParam(required = false) Integer uidSearch) {
     Auth auth = JwtUtility.getAuth(headers);
     if (uid != null) {
       return ControllerUtility.handle(() -> orderService.getOrders(auth, uid));
     } else {
-      return ControllerUtility.handle(() -> orderService.getOrders(auth));
+      return ControllerUtility.handle(() -> orderService.getOrders(auth, userSearch, uidSearch));
     }
   }
 

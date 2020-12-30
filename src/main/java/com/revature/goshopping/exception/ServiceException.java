@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
  * wrap it with this exception and then throw this. then the controller layer
  * just has to catch one type of exception and the status/reason will be known.
  */
+@SuppressWarnings("serial")
 public class ServiceException extends Exception {
   public final HttpStatus status;
 

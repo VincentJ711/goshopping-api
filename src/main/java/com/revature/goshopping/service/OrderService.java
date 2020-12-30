@@ -69,13 +69,13 @@ public class OrderService {
   /**
    * @return list of all orders in the database.
    */
-  public List<Order> getOrders(Auth auth) throws Exception {
+  public List<Order> getOrders(Auth auth, String userSearch, Integer uidSearch) throws Exception {
     if (auth == null) {
       throw new ServiceException(HttpStatus.UNAUTHORIZED);
     } else if (!auth.isAdmin()) {
       throw new ServiceException(HttpStatus.FORBIDDEN);
     }
-    return fromOrderEntities(orderDao.getAllOrders());
+    return fromOrderEntities(orderDao.getAllOrders(userSearch, uidSearch));
   }
 
   private List<Order> fromOrderEntities(List<OrderEntity> orders) {

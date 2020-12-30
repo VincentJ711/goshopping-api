@@ -3,6 +3,7 @@ package com.revature.goshopping.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.revature.goshopping.entity.ItemEntity;
 import com.revature.goshopping.entity.TagEntity;
 
@@ -57,6 +58,7 @@ public class Item {
 		}
 	}
 	
+	@JsonIgnore
 	public boolean isValid() {
 		try {
 			if(this.price < 0.0 || this.description.equals("") || this.name.equals(""))
