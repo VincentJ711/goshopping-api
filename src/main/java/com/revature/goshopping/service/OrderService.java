@@ -149,12 +149,12 @@ public class OrderService {
     
     // check if the payment processed successfully before adding the order
     Stripe.apiKey = System.getenv("STRIPE_SK");
-    PaymentIntentCreateParams params = PaymentIntentCreateParams.builder().setAmount((long)total).setCurrency("usd")
+    PaymentIntentCreateParams params = PaymentIntentCreateParams.builder().setAmount((long)(total*100)).setCurrency("usd")
 			.setConfirm(true).setPaymentMethod(givenOrder.getStripeToken()).build();
     try {
 		PaymentIntent paymentIntent = PaymentIntent.create(params);
 
-		if(paymentIntent.getStatus() == "succeeded") {
+		if(paymentIntent.getStatus().contentEquals("succeeded")) {
 			orderDao.addOrder(orderToMake);
 		    return new Order(orderToMake);
 		}else {
