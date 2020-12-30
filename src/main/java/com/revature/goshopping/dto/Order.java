@@ -15,6 +15,7 @@ public class Order {
   private Long date;
 
   private int userID;
+
   private String stripeToken;
 
   private List<OrderItem> items = new ArrayList<>();
@@ -22,14 +23,6 @@ public class Order {
   // for jackson
   private Order() {
 
-  }
-
-  public Order(int id, Long date, int userID, List<OrderItem> items, String stripeToken) {
-    this.id = id;
-    this.date = date;
-    this.userID = userID;
-    this.items = items;
-    this.stripeToken = stripeToken;
   }
 
   public Order(OrderEntity order) {
@@ -73,13 +66,11 @@ public class Order {
     this.items = items;
   }
 
-public String getStripeToken() {
-	return stripeToken;
-}
+  public String getStripeToken() {
+    return stripeToken;
+  }
 
-public void setStripeToken(String stripeToken) {
-	this.stripeToken = stripeToken;
-}
-  
-  
+  public void setStripeToken(String stripeToken) {
+    this.stripeToken = stripeToken;
+  }
 }
