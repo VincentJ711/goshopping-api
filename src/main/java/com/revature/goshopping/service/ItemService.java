@@ -20,7 +20,10 @@ public class ItemService {
 	ItemDao dao;
 
 	public Item getItem(int id) throws Exception {
-		return new Item(dao.getItem(id));
+		ItemEntity item = dao.getItem(id);
+		if(item == null)
+			throw new ServiceException(HttpStatus.NOT_FOUND);
+		return new Item(item);
 	}
 
 	public int removeItem(int id, Auth auth) throws Exception {
@@ -35,15 +38,17 @@ public class ItemService {
 	}
 
 	public Item updateItem(Item item, int id, Auth auth) throws Exception {
+		if (!item.isValid()) {
+			throw new ServiceException(HttpStatus.BAD_REQUEST, "Empty or null values");
+		}
 		removeItem(id, auth);
 		item.setId(0);
 		return addItem(item, auth);
 	}
 
-	public List<Item> searchItems(String text, String tag, Integer quantity,
-			Integer page) throws Exception {
+	public List<Item> searchItems(String text, String tag, Integer quantity, Integer page, String sort) throws Exception {
 		List<Item> items = new ArrayList<>();
-		for (ItemEntity i : dao.searchItems(text, tag, quantity, page)) {
+		for (ItemEntity i : dao.searchItems(text, tag, quantity, page, sort)) {
 			items.add(new Item(i));
 		}
 		return items;
@@ -58,7 +63,9 @@ public class ItemService {
 	}
 
 	public Item addItem(Item item, Auth auth) throws Exception {
-		if (auth == null) {
+		if (!item.isValid()) {
+			throw new ServiceException(HttpStatus.BAD_REQUEST, "Empty or null values");
+		} else if (auth == null) {
 			throw new ServiceException(HttpStatus.UNAUTHORIZED, "No auth");
 		} else if (auth.isAdmin()) {
 			ItemEntity itemE = new ItemEntity(item);
@@ -68,7 +75,7 @@ public class ItemService {
 					tag = new TagEntity(t.getName());
 				itemE.addTag(tag);
 			}
-			itemE.setForSale(true);;
+			itemE.setForSale(true);
 			return new Item(dao.addItem(itemE));
 		} else {
 			throw new ServiceException(HttpStatus.FORBIDDEN, "Not admin");

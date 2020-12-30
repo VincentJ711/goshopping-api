@@ -55,28 +55,28 @@ public class ItemDao {
 	}
 
 	public List<ItemEntity> searchItems(String text, String tag,
-			Integer quantity, Integer page) {
+			Integer quantity, Integer page, String sort) {
 		Session session = sessionFactory.getCurrentSession();
 		Query<ItemEntity> query;
 
 		if (text != null && tag != null) {
 			String queryString = "select i from ItemEntity i, IN (i.tags) t " +
-					"where LOWER(i.name) like :text and (t.name=:tag and i.forSale=true)";
+					"where LOWER(i.name) like :text and (t.name=:tag and i.forSale=true) order by " + orderBy(sort);
 			query = session.createQuery(queryString, ItemEntity.class)
 					.setParameter("text", "%" + text.toLowerCase() + "%")
 					.setParameter("tag", tag);
 		} else if (text != null) {
 			String queryString = "select i from ItemEntity i " +
-					"where LOWER(i.name) like :text and i.forSale=true";
+					"where LOWER(i.name) like :text and i.forSale=true order by " + orderBy(sort);
 			query = session.createQuery(queryString, ItemEntity.class)
 					.setParameter("text", "%" + text.toLowerCase() + "%");
 		} else if (tag != null) {
 			String queryString = "select i from ItemEntity i, IN (i.tags) t " +
-					"where t.name=:tag and i.forSale=true";
+					"where t.name=:tag and i.forSale=true order by " + orderBy(sort);
 			query = session.createQuery(queryString, ItemEntity.class)
 					.setParameter("tag", tag);
 		} else {
-			query = session.createQuery("from ItemEntity where forSale=true",
+			query = session.createQuery("from ItemEntity where forSale=true order by " + orderBy(sort),
 					ItemEntity.class);
 		}
 
@@ -89,5 +89,21 @@ public class ItemDao {
 		}
 
 		return query.list();
+	}
+	
+	private String orderBy(String sort) {
+		if(sort == null) {
+			return "id";
+		} else if(sort.equals("price_asc")) {
+			return "price ASC";
+		} else if(sort.equals("price_desc")) {
+			return "price DESC";
+		} else if(sort.equals("name_asc")) {
+			return "name ASC";
+		} else if(sort.equals("name_desc")) {
+			return "name DESC";
+		} else {
+			return "id";
+		}
 	}
 }

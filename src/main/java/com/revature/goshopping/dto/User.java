@@ -10,7 +10,7 @@ public class User {
   private String password;
 
   // for jackson
-  private User() {
+  public User() {
 
   }
 
@@ -20,6 +20,16 @@ public class User {
     this.admin = admin;
     this.password = password;
   }
+  
+  public boolean isValid() {
+		try {
+			if( this.username.equals("") || this.password.equals(""))
+				return false;
+			return true;
+		} catch(NullPointerException e) {
+			return false;
+		}
+	}
 
   public Integer getId() {
     return id;

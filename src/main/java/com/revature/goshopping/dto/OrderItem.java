@@ -8,41 +8,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderItem extends Item {
-  private int quantity;
+	private int quantity;
 
-  // for jackson
-  public OrderItem() {
+	// for jackson
+	public OrderItem() {
 
-  }
+	}
 
-  public OrderItem(int id, float price, String description, String name, String img,
-      List<Tag> tags, int quantity) {
-    super(id, price, description, name, img, tags);
-    this.quantity = quantity;
-  }
+	public OrderItem(int id, float price, String description, String name, String img, List<Tag> tags, int quantity) {
+		super(id, price, description, name, img, tags);
+		this.quantity = quantity;
+	}
 
-  public OrderItem(ItemOrderEntity ioe) {
-    ItemEntity item = ioe.getItem();
-    List<Tag> tags = new ArrayList<>();
+	public OrderItem(ItemOrderEntity ioe) {
+		ItemEntity item = ioe.getItem();
+		List<Tag> tags = new ArrayList<>();
 
-    for (TagEntity tag : item.getTags()) {
-      tags.add(new Tag(tag));
-    }
+		for (TagEntity tag : item.getTags()) {
+			tags.add(new Tag(tag));
+		}
 
-    setId(item.getId());
-    setPrice(item.getPrice());
-    setDescription(item.getDescription());
-    setName(item.getName());
-    setImg(item.getImg());
-    setTags(tags);
-    setQuantity(ioe.getQuantity());
-  }
+		setId(item.getId());
+		setPrice(item.getPrice());
+		setDescription(item.getDescription());
+		setName(item.getName());
+		setImg(item.getImg());
+		setTags(tags);
+		setQuantity(ioe.getQuantity());
+	}
 
-  public int getQuantity() {
-    return quantity;
-  }
+	public int getQuantity() {
+		return quantity;
+	}
 
-  public void setQuantity(int quantity) {
-    this.quantity = quantity;
-  }
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 }
