@@ -26,7 +26,7 @@ public class ItemController {
       @RequestParam(required = false, name = "page") Integer page,
       @RequestParam(required = false, name = "sortBy") String sort) {
     return ControllerUtility.handle(() ->
-        serv.searchItems(text, tag, quantity, page));
+        serv.searchItems(text, tag, quantity, page, sort));
   }
 
   @GetMapping("/item/{id}")

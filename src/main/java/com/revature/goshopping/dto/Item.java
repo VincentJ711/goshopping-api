@@ -57,6 +57,16 @@ public class Item {
 		}
 	}
 	
+	public boolean isValid() {
+		try {
+			if(this.price < 0.0 || this.description.equals("") || this.name.equals(""))
+				return false;
+			return true;
+		} catch(NullPointerException e) {
+			return false;
+		}
+	}
+	
 	public void addTag(Tag tag) {
 		this.tags.add(tag);
 	}
