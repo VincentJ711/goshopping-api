@@ -76,7 +76,6 @@ public class ItemService {
 				itemE.addTag(tag);
 			}
 			itemE.setForSale(true);
-			;
 			return new Item(dao.addItem(itemE));
 		} else {
 			throw new ServiceException(HttpStatus.FORBIDDEN, "Not admin");
