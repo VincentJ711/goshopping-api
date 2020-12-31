@@ -33,7 +33,7 @@ public class OrderController {
       @RequestParam(required = false) Integer uid,
       @RequestParam(required = false) String username) {
     Auth auth = JwtUtility.getAuth(headers);
-    if (username != null){
+    if (username != null || (username == null && uid == null)){
         return ControllerUtility.handle(() -> orderService.getOrders(auth, username, uid));
     } else {
       return ControllerUtility.handle(() -> orderService.getOrders(auth, uid));
