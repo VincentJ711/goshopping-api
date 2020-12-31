@@ -47,15 +47,12 @@ public class OrderDao {
     	            .createQuery("from OrderEntity where user.username like :user")
     	            .setParameter("user", "%" + userSearch + "%")
     	            .list();
-    	} else if(uidSearch != null) {
+    	} else {
     		return sessionFactory
     	            .getCurrentSession()
     	            .createQuery("from OrderEntity where user.id = :uid")
     	            .setParameter("uid", uidSearch)
     	            .list();
-    	} else {
-    		return null;
-    	}
-        
+    	}        
     }
 }
