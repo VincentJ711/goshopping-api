@@ -67,7 +67,7 @@ public class ItemDao {
 			query = session.createQuery(queryString, ItemEntity.class)
 					.setParameter("tag", tag);
 		} else {
-			query = session.createQuery("from ItemEntity where forSale=true order by " + orderBy(sort),
+			query = session.createQuery("from ItemEntity i where forSale=true order by " + orderBy(sort),
 					ItemEntity.class);
 		}
 

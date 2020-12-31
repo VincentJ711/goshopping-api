@@ -40,10 +40,18 @@ public class UserService {
 	 * Post a user to database and return the user if the operation is succeed
 	 * otherwise return null.
 	 */
-	public User postUserFromService(User user) throws Exception {
-		UserEntity userEntity = new UserEntity(user.getUsername(), PasswordUtility.hash(user.getPassword()), false);
-		if(!user.isValid()) {
-			throw new ServiceException(HttpStatus.BAD_REQUEST, "Empty or null values");
+	public User postUserFromService(User user, Auth auth) throws Exception {
+		UserEntity userEntity;
+		if(auth == null || !auth.isAdmin()) {
+			userEntity = new UserEntity(user.getUsername(), PasswordUtility.hash(user.getPassword()), false);
+			if(!user.isValid()) {
+				throw new ServiceException(HttpStatus.BAD_REQUEST, "Empty or null values");
+			}
+		} else {
+			userEntity = new UserEntity(user.getUsername(), PasswordUtility.hash(user.getPassword()), user.getAdmin());
+			if(!user.isValid()) {
+				throw new ServiceException(HttpStatus.BAD_REQUEST, "Empty or null values");
+			}
 		}
 		try {
 			userDAO.addUser(userEntity);
