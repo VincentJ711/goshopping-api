@@ -18,6 +18,9 @@ public class ItemController {
   @Autowired
   private ItemService serv;
 
+  @Autowired
+  private JwtUtility jwtUtility;
+
   @GetMapping("/item")
   public ResponseEntity<List<Item>> searchItems(
       @RequestParam(required = false, name = "text") String text,
@@ -37,21 +40,21 @@ public class ItemController {
   @DeleteMapping("/item/{id}")
   public ResponseEntity<Integer> deleteItem(@PathVariable int id,
       @RequestHeader Map<String, String> headers) {
-    Auth auth = JwtUtility.getAuth(headers);
+    Auth auth = jwtUtility.getAuth(headers);
     return ControllerUtility.handle(() -> serv.removeItem(id, auth));
   }
 
   @PutMapping("/item/{id}")
   public ResponseEntity<Item> putItem(@PathVariable int id,
       @RequestBody Item item, @RequestHeader Map<String, String> headers) {
-    Auth auth = JwtUtility.getAuth(headers);
+    Auth auth = jwtUtility.getAuth(headers);
     return ControllerUtility.handle(() -> serv.updateItem(item, id, auth));
   }
 
   @PostMapping("/item")
   public ResponseEntity<Item> postItem(@RequestBody Item item,
       @RequestHeader Map<String, String> headers) {
-    Auth auth = JwtUtility.getAuth(headers);
+    Auth auth = jwtUtility.getAuth(headers);
     return ControllerUtility.handle(() -> serv.addItem(item, auth));
   }
 

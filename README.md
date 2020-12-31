@@ -10,36 +10,23 @@ There is a jenkins application hosted on the same server @ `:8080/jenkins` which
 
 ### running
 
-make sure the database you refer to in the DB_URL below exists and ensure either the following jvm opts are set for the tomcat process
+make sure the database you refer to in the DB_URL below exists and ensure the following environment variables are set for the tomcat process.
 
 ```
--DDB_URL=jdbc:postgresql://.....:5432/goshopping \
-    -DHBM2_DDL_AUTO=update \
-    -DDB_USERNAME=postgres \ 
-    -DDB_PASSWORD=password \
-    -DSTRIPE_SK=sk_test...
+DB_URL=jdbc:postgresql://.....:5432/goshopping
+HBM2_DDL_AUTO=update
+DB_USERNAME=postgres
+DB_PASSWORD=password
+STRIPE_SK=sk_test...
+JWT_SIGNING_KEY="this must be a very long sentence"
 ```
 
-OR they exist as environment variables
+if running tomcat on the ec2 through systemctl, paste the above lines to the end of `/usr/share/tomcat/conf/tomcat.conf` and then do `sudo service tomcat restart`. note that whenever you change this file, you will have to restart tomcat.
 
-```
-export DB_URL="jdbc://..."
-export ...
-```
-
-Note the jvm opts are required for the tomcat process on the ec2 instance. To make sure they are used, paste the following to the end of `/usr/share/tomcat/conf/tomcat.conf`. Also note you will have to `sudo service tomcat restart` whenever you change this file.
-
-```
-JAVA_OPTS="-DDB_URL=... -DDB_USERNAME=postgres ..."
-```
-
-Finally, one way to run is by doing something like
+Finally, to run
 
 ``` 
-DB_USERNAME=postgres DB_PASSWORD=password HBM2_DDL_AUTO=create \
-    DB_URL="jdbc:postgresql://localhost:5432/goshopping" \
-    STRIPE_SK="sk_test..." \
-    mvn clean package tomee:run
+mvn clean package tomee:run
 ```
 
 ### initializing a db with data

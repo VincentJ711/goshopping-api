@@ -18,13 +18,16 @@ public class OrderController {
   @Autowired
   OrderService orderService;
 
+  @Autowired
+  private JwtUtility jwtUtility;
+
   /**
    * this posts an order to be recorded
    */
   @PostMapping
   public ResponseEntity<Order> postOrder(@RequestBody Order order,
       @RequestHeader Map<String, String> headers) {
-    Auth auth = JwtUtility.getAuth(headers);
+    Auth auth = jwtUtility.getAuth(headers);
     return ControllerUtility
         .handle(() -> orderService.createOrder(auth, order));
   }
@@ -34,7 +37,7 @@ public class OrderController {
       @RequestHeader Map<String, String> headers,
       @RequestParam(required = false) Integer uid,
       @RequestParam(required = false) String username) {
-    Auth auth = JwtUtility.getAuth(headers);
+    Auth auth = jwtUtility.getAuth(headers);
     if (uid != null && username == null) {
       return ControllerUtility.handle(() -> orderService.getOrders(auth, uid));
     } else {

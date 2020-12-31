@@ -2,9 +2,12 @@ package com.revature.goshopping.utility;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.goshopping.config.Env;
 import com.revature.goshopping.dto.Auth;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -12,32 +15,32 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
+@Component
 public final class JwtUtility {
-  private static String signingKey = "TODO we can change this whenever we " +
-      "want if we care enough to an env var.";
+  @Autowired
+  private Env env;
 
   /**
    * how many milliseconds a jwt can last before its expired.
    */
-  private static long ttlMillis = 7 * 24 * 60 * 60000;
+  private final long ttlMillis = 7 * 24 * 60 * 60000;
 
-  private static ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new ObjectMapper();
 
-  private static String claimKey = "auth";
+  private final String claimKey = "auth";
 
-  private static SignatureAlgorithm algo = SignatureAlgorithm.HS256;
+  private final SignatureAlgorithm algo = SignatureAlgorithm.HS256;
 
   /**
    * @param auth will be encoded into the jwt token to be decoded on subsequent
    *     requests
    * @return jwt token with the auth object encoded into it.
    */
-  public static String create(Auth auth)
-      throws JsonProcessingException {
+  public String create(Auth auth) throws JsonProcessingException {
     long nowMillis = System.currentTimeMillis();
     Date now = new Date(nowMillis);
     Date expires = new Date(nowMillis + ttlMillis);
-    byte[] jwtKeyBytes = DatatypeConverter.parseBase64Binary(signingKey);
+    byte[] jwtKeyBytes = DatatypeConverter.parseBase64Binary(env.jwtSigningKey);
     Key key = new SecretKeySpec(jwtKeyBytes, algo.getJcaName());
 
     return Jwts.builder()
@@ -52,10 +55,10 @@ public final class JwtUtility {
    * @param jwt the jwt to decode
    * @return a nullable Auth parsed from the given jwt
    */
-  private static Auth decode(String jwt) {
+  private Auth decode(String jwt) {
     try {
       String json = Jwts.parserBuilder()
-          .setSigningKey(DatatypeConverter.parseBase64Binary(signingKey))
+          .setSigningKey(DatatypeConverter.parseBase64Binary(env.jwtSigningKey))
           .build()
           .parseClaimsJws(jwt).getBody().get(claimKey).toString();
       return mapper.readValue(json, Auth.class);
@@ -69,7 +72,7 @@ public final class JwtUtility {
    * @return nullable Auth. returns null if jwt is not found in the given
    *     headers or returns null if it's invalid.
    */
-  public static Auth getAuth(Map<String, String> headers) {
+  public Auth getAuth(Map<String, String> headers) {
     try {
       String[] tokens = new String[]{};
       String[] headerNames = new String[]{
