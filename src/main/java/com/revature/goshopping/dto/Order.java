@@ -25,6 +25,11 @@ public class Order {
 
   }
 
+  public Order(int userID, List<OrderItem> items) {
+    this.userID = userID;
+    this.items = items;
+  }
+
   public Order(OrderEntity order) {
     for (ItemOrderEntity ioe : order.getItemOrders()) {
       this.items.add(new OrderItem(ioe));
@@ -72,5 +77,15 @@ public class Order {
 
   public void setStripeToken(String stripeToken) {
     this.stripeToken = stripeToken;
+  }
+
+  @Override
+  public String toString() {
+    return "Order{" +
+        "id=" + id +
+        ", date=" + date +
+        ", userID=" + userID +
+        ", items=" + items +
+        '}';
   }
 }

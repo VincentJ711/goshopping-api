@@ -31,15 +31,6 @@ public class ItemDao {
 		item.setForSale(false);
 	}
 
-	public ItemEntity updateItem(ItemEntity item) throws Exception {
-		Session session = sessionFactory.getCurrentSession();
-		for(TagEntity t : item.getTags()) {
-			session.saveOrUpdate(t);
-		}
-		session.update(item);
-		return item;
-	}
-
 	public ItemEntity getItem(int id) throws Exception {
 		return sessionFactory.getCurrentSession().get(ItemEntity.class, id);
 	}
@@ -93,17 +84,17 @@ public class ItemDao {
 	
 	private String orderBy(String sort) {
 		if(sort == null) {
-			return "id";
+			return "i.id";
 		} else if(sort.equals("price_asc")) {
-			return "price ASC";
+			return "i.price ASC";
 		} else if(sort.equals("price_desc")) {
-			return "price DESC";
+			return "i.price DESC";
 		} else if(sort.equals("name_asc")) {
-			return "name ASC";
+			return "i.name ASC";
 		} else if(sort.equals("name_desc")) {
-			return "name DESC";
+			return "i.name DESC";
 		} else {
-			return "id";
+			return "i.id";
 		}
 	}
 }

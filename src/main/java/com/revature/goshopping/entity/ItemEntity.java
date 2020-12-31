@@ -19,8 +19,10 @@ public class ItemEntity {
 
 	private String name;
 
+	@Column(columnDefinition="text", nullable = false)
 	private String description;
 
+	@Column(columnDefinition="text")
 	private String img;
 	
 	private Boolean forSale;
