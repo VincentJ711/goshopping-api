@@ -48,7 +48,8 @@ public class UserService {
 				throw new ServiceException(HttpStatus.BAD_REQUEST, "Empty or null values");
 			}
 		} else {
-			userEntity = new UserEntity(user.getUsername(), PasswordUtility.hash(user.getPassword()), user.getAdmin());
+			boolean admin = (user.getAdmin()== null ? false : user.getAdmin());
+			userEntity = new UserEntity(user.getUsername(), PasswordUtility.hash(user.getPassword()), admin);
 			if(!user.isValid()) {
 				throw new ServiceException(HttpStatus.BAD_REQUEST, "Empty or null values");
 			}
