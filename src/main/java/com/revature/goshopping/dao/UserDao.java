@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.goshopping.entity.UserEntity;
-import com.revature.goshopping.utility.PasswordUtility;
 
 @Repository
 @Transactional

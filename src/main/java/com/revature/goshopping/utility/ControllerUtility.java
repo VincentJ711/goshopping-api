@@ -1,6 +1,7 @@
 package com.revature.goshopping.utility;
 
 import com.revature.goshopping.exception.ServiceException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,6 @@ public class ControllerUtility {
   }
 
   private static <T> ResponseEntity<T> onError(ServiceException err) {
-    if (err.status == HttpStatus.INTERNAL_SERVER_ERROR) {
-      err.printStackTrace();
-    } else {
-      System.out.println(err.toString());
-    }
     return new ResponseEntity<>(null, err.status);
   }
 
