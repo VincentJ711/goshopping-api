@@ -30,10 +30,12 @@ public class UserController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<User> postUser(@RequestBody User user) {
+	public ResponseEntity<User> postUser(@RequestHeader Map<String, String> headers,
+			@RequestBody User user) {
+		Auth auth = JwtUtility.getAuth(headers);
 
 		return ControllerUtility.handle(() -> {
-			return userservice.postUserFromService(user);
+			return userservice.postUserFromService(user, auth);
 		});
 	}
 
