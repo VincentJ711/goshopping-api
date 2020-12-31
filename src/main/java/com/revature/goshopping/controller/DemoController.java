@@ -5,6 +5,7 @@ import com.revature.goshopping.dto.Auth;
 import com.revature.goshopping.exception.ServiceException;
 import com.revature.goshopping.utility.ControllerUtility;
 import com.revature.goshopping.utility.JwtUtility;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/demos")
 public class DemoController {
+  @Autowired
+  private JwtUtility jwtUtility;
+
   /**
    * demonstrates a very simple way to write your controller methods. also
    * shows how a service method interaction is handled.
@@ -62,7 +66,7 @@ public class DemoController {
       String jwt = null;
 
       try {
-        jwt = JwtUtility.create(auth);
+        jwt = jwtUtility.create(auth);
       } catch (JsonProcessingException e) { }
 
       return new LoginResponse(jwt);
@@ -76,7 +80,7 @@ public class DemoController {
    */
   @GetMapping("/parse_jwt")
   public String gettingTheAuth(@RequestHeader Map<String, String> headers) {
-    Auth auth = JwtUtility.getAuth(headers);
+    Auth auth = jwtUtility.getAuth(headers);
     return "i parsed from the jwt in the headers an auth object = " + auth;
   }
 

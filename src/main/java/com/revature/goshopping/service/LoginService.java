@@ -16,6 +16,9 @@ public class LoginService {
   @Autowired
   private UserDao userDao;
 
+  @Autowired
+  private JwtUtility jwtUtility;
+
   /**
    * @return a not null LoginResponse.
    */
@@ -30,6 +33,6 @@ public class LoginService {
     }
 
     Auth auth = new Auth(dbUser.getId(), dbUser.isAdmin());
-    return new LoginResponse(JwtUtility.create(auth));
+    return new LoginResponse(jwtUtility.create(auth));
   }
 }
