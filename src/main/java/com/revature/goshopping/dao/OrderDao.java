@@ -36,10 +36,23 @@ public class OrderDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<OrderEntity> getAllOrders() throws Exception {
-        return sessionFactory
-            .getCurrentSession()
-            .createQuery("from OrderEntity")
-            .list();
+    public List<OrderEntity> getAllOrders(String userSearch, Integer uidSearch) throws Exception {
+    	if(userSearch == null && uidSearch == null) {
+    		return sessionFactory.getCurrentSession()
+    	            .createQuery("from OrderEntity")
+    	            .list();
+    	} else if(userSearch != null) {
+    		return sessionFactory
+    	            .getCurrentSession()
+    	            .createQuery("from OrderEntity where user.username like :user")
+    	            .setParameter("user", "%" + userSearch + "%")
+    	            .list();
+    	} else {
+    		return sessionFactory
+    	            .getCurrentSession()
+    	            .createQuery("from OrderEntity where user.id = :uid")
+    	            .setParameter("uid", uidSearch)
+    	            .list();
+    	}        
     }
 }

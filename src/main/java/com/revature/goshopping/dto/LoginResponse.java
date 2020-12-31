@@ -6,7 +6,7 @@ package com.revature.goshopping.dto;
 public class LoginResponse {
   private String jwt;
 
-  private LoginResponse() {
+  public LoginResponse() {
 
   }
 

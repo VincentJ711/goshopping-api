@@ -21,7 +21,7 @@ public class Order {
   private List<OrderItem> items = new ArrayList<>();
 
   // for jackson
-  private Order() {
+  public Order() {
 
   }
 
