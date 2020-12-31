@@ -15,39 +15,36 @@ import java.util.Map;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-  @Autowired
-  OrderService orderService;
+	@Autowired
+	OrderService orderService;
 
-  /**
-   * this posts an order to be recorded
-   */
-  @PostMapping
-  public ResponseEntity<Order> postOrder(@RequestBody Order order,
-      @RequestHeader Map<String, String> headers) {
-    Auth auth = JwtUtility.getAuth(headers);
-    return ControllerUtility
-        .handle(() -> orderService.createOrder(auth, order));
-  }
+	/**
+	 * this posts an order to be recorded
+	 */
+	@PostMapping
+	public ResponseEntity<Order> postOrder(@RequestBody Order order, @RequestHeader Map<String, String> headers) {
+		Auth auth = JwtUtility.getAuth(headers);
+		return ControllerUtility.handle(() -> orderService.createOrder(auth, order));
+	}
 
-  @GetMapping
+	@GetMapping
   public ResponseEntity<List<Order>> getOrders(
       @RequestHeader Map<String, String> headers,
       @RequestParam(required = false) Integer uid,
-      @RequestParam(required = false) String userSearch,
-      @RequestParam(required = false) Integer uidSearch) {
+      @RequestParam(required = false) String username) {
     Auth auth = JwtUtility.getAuth(headers);
-    if (uid != null) {
-      return ControllerUtility.handle(() -> orderService.getOrders(auth, uid));
+    if (username != null){
+        return ControllerUtility.handle(() -> orderService.getOrders(auth, username, uid));
     } else {
-      return ControllerUtility.handle(() -> orderService.getOrders(auth, userSearch, uidSearch));
-    }
+      return ControllerUtility.handle(() -> orderService.getOrders(auth, uid));
+    } 
   }
 
-  /**
-   * This returns the order with the given id
-   */
-  @GetMapping("/{id}")
-  public ResponseEntity<Order> getOrderById(@PathVariable("id") int id) {
-    return ControllerUtility.handle(() -> orderService.getOrder(id));
-  }
+	/**
+	 * This returns the order with the given id
+	 */
+	@GetMapping("/{id}")
+	public ResponseEntity<Order> getOrderById(@PathVariable("id") int id) {
+		return ControllerUtility.handle(() -> orderService.getOrder(id));
+	}
 }
