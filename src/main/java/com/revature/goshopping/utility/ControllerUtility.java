@@ -1,17 +1,22 @@
 package com.revature.goshopping.utility;
 
 import com.revature.goshopping.exception.ServiceException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 public class ControllerUtility {
+	private static Logger logger = LogManager.getLogger(ControllerUtility.class);
   /**
    * a utility method to avoid repeating error handling logic and to
    * avoid dealing with creating the response entity in your controller methods.
    */
-  public static <T> ResponseEntity<T> handle(Callback<T> cb) {
+  public static <T> ResponseEntity<T> handle(Callback<T> cb, String action) {
     try {
+      logger.info("Request recieved: " + action);
       return ResponseEntity
           .status(HttpStatus.OK)
           .contentType(MediaType.APPLICATION_JSON)
@@ -27,7 +32,7 @@ public class ControllerUtility {
     if (err.status == HttpStatus.INTERNAL_SERVER_ERROR) {
       err.printStackTrace();
     } else {
-      System.out.println(err.toString());
+      logger.warn(err.toString());
     }
     return new ResponseEntity<>(null, err.status);
   }

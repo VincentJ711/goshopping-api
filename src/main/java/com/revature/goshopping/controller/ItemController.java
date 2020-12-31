@@ -26,37 +26,37 @@ public class ItemController {
       @RequestParam(required = false, name = "page") Integer page,
       @RequestParam(required = false, name = "sortBy") String sort) {
     return ControllerUtility.handle(() ->
-        serv.searchItems(text, tag, quantity, page, sort));
+        serv.searchItems(text, tag, quantity, page, sort), "GET Items");
   }
 
   @GetMapping("/item/{id}")
   public ResponseEntity<Item> getItem(@PathVariable int id) {
-    return ControllerUtility.handle(() -> serv.getItem(id));
+    return ControllerUtility.handle(() -> serv.getItem(id), "GET Item");
   }
 
   @DeleteMapping("/item/{id}")
   public ResponseEntity<Integer> deleteItem(@PathVariable int id,
       @RequestHeader Map<String, String> headers) {
     Auth auth = JwtUtility.getAuth(headers);
-    return ControllerUtility.handle(() -> serv.removeItem(id, auth));
+    return ControllerUtility.handle(() -> serv.removeItem(id, auth), "DELETE Item");
   }
 
   @PutMapping("/item/{id}")
   public ResponseEntity<Item> putItem(@PathVariable int id,
       @RequestBody Item item, @RequestHeader Map<String, String> headers) {
     Auth auth = JwtUtility.getAuth(headers);
-    return ControllerUtility.handle(() -> serv.updateItem(item, id, auth));
+    return ControllerUtility.handle(() -> serv.updateItem(item, id, auth), "PUT Item");
   }
 
   @PostMapping("/item")
   public ResponseEntity<Item> postItem(@RequestBody Item item,
       @RequestHeader Map<String, String> headers) {
     Auth auth = JwtUtility.getAuth(headers);
-    return ControllerUtility.handle(() -> serv.addItem(item, auth));
+    return ControllerUtility.handle(() -> serv.addItem(item, auth), "POST Item");
   }
 
   @GetMapping("/tags")
   public ResponseEntity<List<Tag>> getTags() {
-    return ControllerUtility.handle(() -> serv.getTags());
+    return ControllerUtility.handle(() -> serv.getTags(), "GET Tags");
   }
 }

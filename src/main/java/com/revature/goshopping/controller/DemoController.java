@@ -29,7 +29,7 @@ public class DemoController {
     // use this commented line in your controllers.
     // Auth auth = JwtUtility.getAuth(headers);
     Auth auth = new Auth(10, true);
-    return ControllerUtility.handle(() -> aServiceMethod(auth, qp));
+    return ControllerUtility.handle(() -> aServiceMethod(auth, qp), "demo");
   }
 
   /**
@@ -66,7 +66,7 @@ public class DemoController {
       } catch (JsonProcessingException e) { }
 
       return new LoginResponse(jwt);
-    });
+    }, "demo");
   }
 
   /**

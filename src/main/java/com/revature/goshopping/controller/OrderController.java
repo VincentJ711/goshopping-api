@@ -26,7 +26,7 @@ public class OrderController {
       @RequestHeader Map<String, String> headers) {
     Auth auth = JwtUtility.getAuth(headers);
     return ControllerUtility
-        .handle(() -> orderService.createOrder(auth, order));
+        .handle(() -> orderService.createOrder(auth, order), "POST Order");
   }
 
   @GetMapping
@@ -36,9 +36,9 @@ public class OrderController {
       @RequestParam(required = false) String username) {
     Auth auth = JwtUtility.getAuth(headers);
     if (uid != null && username == null) {
-      return ControllerUtility.handle(() -> orderService.getOrders(auth, uid));
+      return ControllerUtility.handle(() -> orderService.getOrders(auth, uid), "GET Orders");
     } else {
-      return ControllerUtility.handle(() -> orderService.getOrders(auth, username, uid));
+      return ControllerUtility.handle(() -> orderService.getOrders(auth, username, uid), "GET Orders");
     }
   }
 
@@ -47,6 +47,6 @@ public class OrderController {
    */
   @GetMapping("/{id}")
   public ResponseEntity<Order> getOrderById(@PathVariable("id") int id) {
-    return ControllerUtility.handle(() -> orderService.getOrder(id));
+    return ControllerUtility.handle(() -> orderService.getOrder(id), "GET Order");
   }
 }

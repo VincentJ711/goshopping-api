@@ -25,7 +25,7 @@ public class LoginController {
 
 	@PostMapping
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginForm loginForm) {
-		return ControllerUtility.handle(() -> loginService.login(loginForm.getUsername(), loginForm.getPassword()));
+		return ControllerUtility.handle(() -> loginService.login(loginForm.getUsername(), loginForm.getPassword()), "POST Login");
 
 	}
 
