@@ -26,7 +26,7 @@ public class UserController {
 
 		return ControllerUtility.handle(() -> {
 			return userservice.getUserFromService(auth);
-		}, "GET Users");
+		});
 	}
 
 	@PostMapping("")
@@ -34,7 +34,7 @@ public class UserController {
 
 		return ControllerUtility.handle(() -> {
 			return userservice.postUserFromService(user);
-		}, "POST User");
+		});
 	}
 
 	@GetMapping("/{id}")
@@ -43,7 +43,7 @@ public class UserController {
 
 		return ControllerUtility.handle(() -> {
 			return userservice.findUserFromService(auth, id);
-		}, "GET User");
+		});
 	}
 
 	@DeleteMapping("/{id}")
@@ -53,7 +53,7 @@ public class UserController {
 		return ControllerUtility.handle(() -> {
 			userservice.deleteUserFromService(auth, id);
 			return null;
-		}, "DELETE User");
+		});
 	}
 
 	@PutMapping("")
@@ -62,7 +62,7 @@ public class UserController {
 		Auth auth = JwtUtility.getAuth(headers);
 		return ControllerUtility.handle(() -> {
 			return userservice.updateUserFromService(auth, newPass);
-		}, "PUT User");
+		});
 
 	}
 }
