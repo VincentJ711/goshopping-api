@@ -148,7 +148,7 @@ public class OrderService {
       }
 
       // add the price for each item to the order total
-      total += ie.getPrice();
+      total += ie.getPrice()*quantity;
       itemsForOrderToMake.add(new ItemOrderEntity(ie, orderToMake, quantity));
     }
 
