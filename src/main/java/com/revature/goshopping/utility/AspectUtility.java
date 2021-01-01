@@ -25,9 +25,19 @@ public class AspectUtility {
 	public void logOnThrow(ServiceException e) {
 		if (e.status == HttpStatus.INTERNAL_SERVER_ERROR) {
 			logger.error("Interal Server Error");
+			logger.error(e.toString());
 			e.printStackTrace();
 		} else {
 			logger.warn(e.toString());
+		}
+	}
+	
+	@AfterThrowing(pointcut = ("execution(* com.revature.goshopping.service..*.*(..))"), throwing = "e")
+	public void logOnThrow(Throwable e) {
+		if(!(e instanceof ServiceException)) {
+			logger.error("Internal Server Error");
+			logger.error(e.toString());
+			e.printStackTrace();
 		}
 	}
 
