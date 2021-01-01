@@ -6,3 +6,4 @@
 *.iml
 .springBeans
 .DS_Store
+logs/
