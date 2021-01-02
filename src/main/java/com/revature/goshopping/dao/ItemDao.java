@@ -72,7 +72,7 @@ public class ItemDao {
 		}
 
 		if (quantity != null && quantity > 0) {
-			query.setMaxResults(quantity);
+			query.setMaxResults(quantity + 1);
 
 			if (page != null && page > -1) {
 				query.setFirstResult(quantity * page);
