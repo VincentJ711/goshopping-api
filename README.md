@@ -2,59 +2,87 @@
 
 ## goshopping-api
 
-This api is hosted on ec2 @ `http://54.151.78.250:8080/goshopping-api`. To be more specific, a tomcat process is actually serving the api.war file generated during the Jenkins build. This unzipped war file is our application. You can find the documentation for this api [here](http://54.151.78.250:8080/goshopping-api/docs/index.html).
+This is the backend api for an ecommerce store. You may find the documentation for it [here](http://54.151.78.250:8080/goshopping-api). The api is currently being served by a tomcat instance that is running on an EC2 instance.
 
-### ci/cd setup
+## technologies used
 
-There is a jenkins application hosted on the same server @ `:8080/jenkins` which contains a multibranch pipeline that's configured to start whenever a push occurs to any branch of this repo. A deployment will occur if and only if a change to the dev branch is made.
+- PostgreSQL
+- Hibernate
+- JDBC
+- Spring MVC
+- JWT tokens
+- Stripe
+- Log4j
+- Swagger/OpenAPI 3.0
+- Maven
 
-### running
+## features
 
-make sure the database you refer to in the DB_URL below exists and ensure the following environment variables are set for the tomcat process.
+- account creation/login
+- secured api endpoints
+- store item management
+- viewable order history
+- order creation
+- payment processing via Stripe
+- search/sort items by name/category/price
+
+## getting started
+
+### miminum setup
+
+```
+git clone https://github.com/VincentJ711/goshopping-api.git
+mvn clean package
+```
+
+Next, set up the required environment variables.
 
 ```
 DB_URL=jdbc:postgresql://.....:5432/goshopping
-HBM2_DDL_AUTO=update
+HBM2_DDL_AUTO={create|update}
 DB_USERNAME=postgres
 DB_PASSWORD=password
 STRIPE_SK=sk_test...
 JWT_SIGNING_KEY="this must be a very long sentence"
 ```
 
-if running tomcat on the ec2 through systemctl, paste the above lines to the end of `/usr/share/tomcat/conf/tomcat.conf` and then do `sudo service tomcat restart`. note that whenever you change this file, you will have to restart tomcat.
+Then turn on your local PostgreSQL instance and make sure the database mentioned at the end of the above `DB_URL` exists.
 
-Finally, to run
+Finally, you may start the api by doing
 
 ``` 
 mvn clean package tomee:run
 ```
 
-### initializing a db with data
+### additional, optional setup
 
-There is a java application @ `com.revature.goshopping.utility.DbInitializer` you may run to initialize the database with data. make sure the following env vars are set:
-
-```
-export ADMIN_JWT=eyJhbGci... 
-export API_URL=http://localhost:4321/api
-export NEW_USER_PASSWORD=1234
-```
-
-### truncating the tables in the db
-
-There is a java application @ `com.revature.goshopping.utility.DbCleanser` you may run to delete all the rows from all the tables. make sure the following env vars are set:
-
-```
-export DB_USERNAME=postgres
-export DB_URL=jdbc:postgresql://localhost:5432/goshopping
-export DB_PASSWORD=1234
-```
-
-### generating openapi/swagger documentation
-
-went into the webapp folder and did
+You may initialize the PostgreSQL database with sample data by running the application @ `com.revature.goshopping.utility.DbInitializer`. Before you do so, you need to make sure the following environment variables are set
 
 ``` 
-curl https://codeload.github.com/swagger-api/swagger-ui/tar.gz/master | tar -xz --strip=1 swagger-ui-master/dist && mv dist docs
+ADMIN_JWT=eyJhbGci... 
+API_URL=http://localhost:4321/api
+NEW_USER_PASSWORD=1234
 ```
 
-then modified the ui.url in docs/index.html to be ./api.yaml. then wrote the openspec api docs in the docs/api.yaml file.
+To get the above `ADMIN_JWT`, you'll need to create an account, set the admin column for the user in the PostgreSQL database to be true, and then login to recieve the jwt.
+
+## Usage
+
+This is a REST api. You may communicate with it via standard HTTP methods. All the routes and required request data are noted in the [documentation](http://54.151.78.250:8080/goshopping-api).
+
+## database ERD
+
+![](https://user-images.githubusercontent.com/25497140/103494164-3e6dc780-4dea-11eb-8f94-25e998a56305.png)
+
+## Contributors
+
+- Vincent Sevilla
+- Md Abul Kashem
+- Nick Barak
+- Zack Garner
+- Hisham Saymeh
+- Erik Terreri
+
+## License
+
+This project is licensed under the terms of the MIT license.
