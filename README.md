@@ -2,7 +2,7 @@
 
 ## goshopping-api
 
-This is the backend api for an ecommerce store. You may find the documentation for it [here](http://54.151.78.250:8080/goshopping-api). The api is currently being served by a tomcat instance that is running on an EC2 instance.
+This is the backend api for an ecommerce store. You may find the documentation for it [here](http://54.151.78.250:8080/goshopping-api/docs/index.html). The api is currently being served by a tomcat instance that is running on an EC2 instance.
 
 ## technologies used
 
@@ -68,7 +68,7 @@ To get the above `ADMIN_JWT`, you'll need to create an account, set the admin co
 
 ## Usage
 
-This is a REST api. You may communicate with it via standard HTTP methods. All the routes and required request data are noted in the [documentation](http://54.151.78.250:8080/goshopping-api).
+This is a REST api. You may communicate with it via standard HTTP methods. All the routes and required request data are noted in the [documentation](http://54.151.78.250:8080/goshopping-api/docs/index.html).
 
 ## database ERD
 
